@@ -38,9 +38,13 @@ To link a new organisational or social identity to your RCIAM account:
 1. You will need to sign in using the login credentials from the
    institutional/social identity provider you want to link to your account.
 
-   {{% alert title="Warning" color="warning" %}} It is very important to escape
+   :::caution
+
+   It is very important to escape
    the identity provider selection, cached in the discovery page, before picking
-   the new one. {{% /alert %}}
+   the new one.
+
+   :::
 
 1. After successful authentication, the new Identity Provider will be available
    under the Organizational Identities tab and you'll be able to access RCIAM
@@ -83,9 +87,13 @@ To link a subject DN to your RCIAM account:
 
 1. Continuously, you will need to sign in using the IGTF Certificate Proxy.
 
-   {{% alert title="Warning" color="warning" %}} It is very important to escape
+   :::caution
+
+   It is very important to escape
    the identity provider selection, cached in the discovery page, before picking
-   the new one. {{% /alert %}}
+   the new one.
+
+   :::
 
    ![RCIAM IdP discovery IGTF](../../static/img/user/discovery-igft.png)
 

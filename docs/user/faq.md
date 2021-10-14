@@ -69,12 +69,22 @@ RCIAM profile page using your IGTF certificate:
 1. Click [here](https://rciam.example.org/proxy/saml2/idp/SingleLogoutService.php?ReturnTo=https%3A%2F%2Frciam.example.org%2Fregistry%2Fauth%2Flogin)
    to access your profile page
 
-{{% alert title="Warning" color="warning" %}} This may log you out of any
-service you have accessed with RCIAM on this browser! {{% /alert %}} 2. On the RCIAM identity provider discovery page, select **IGTF**
+:::caution
 
-{{% alert title="Warning" color="warning" %}} If prompted to log in with a
+This may log you out of any
+service you have accessed with RCIAM on this browser!
+
+:::
+
+1. On the RCIAM identity provider discovery page, select **IGTF**
+
+:::caution
+
+If prompted to log in with a
 different identity provider, click **CHOOSE ANOTHER ACCOUNT** and then select
 **IGTF**. Alternatively, you can click [here](https://rciam.example.org/registry/auth/login?idphint=https%3A%2F%2Fedugain-proxy.igtf.net%2Fsimplesaml%2Fsaml2%2Fidp%2Fmetadata.php)
-for your convenience {{% /alert %}}
+for your convenience
+
+:::
 
 ![RCIAM IdP discovery IGTF](../../static/img/user/discovery-igft.png)

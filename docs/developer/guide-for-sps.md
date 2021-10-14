@@ -228,8 +228,11 @@ To find the ID and secret of your client, do the following:
 1. Look for the **Client ID** in the **Protocol** tab.
 1. Select the **Display/edit client secret:** option from the **Protocol** tab.
 
-{{% alert title="Note" color="info" %}} You can copy these values using the
-green copy button next to the desired field.{{% /alert %}}
+:::info
+
+You can copy these values using the green copy button next to the desired field.
+
+:::
 
 #### Setting one or more Redirection URIs
 
@@ -383,9 +386,12 @@ If the client is capable of using `S256`, it MUST use `S256`. Clients are
 permitted to use `plain` only if they cannot support `S256` for some technical
 reason.
 
-{{% alert title="Note" color="info" %}} There are various tools that generate
-these values such as <https://tonyxu-io.github.io/pkce-generator/>
-{{% /alert %}}
+:::info
+
+There are various tools that generate these values such as
+<https://tonyxu-io.github.io/pkce-generator/>
+
+:::
 
 Then the `code_challenge` is sent in the Authorization Request along with the
 transformation method (`code_challenge_method`).
@@ -402,8 +408,11 @@ GET "${AUTHORISATION_ENDPOINT}?
       &code_challenge_method=S256"
 ```
 
-{{% alert title="Note" color="info" %}} You can find the _Authorisation
-Endpoint_ in the [Endpoints](#endpoints) table.{{% /alert %}}
+:::info
+
+You can find the _Authorisation Endpoint_ in the [Endpoints](#endpoints) table.
+
+:::
 
 The Authorization Endpoint responds as usual but records `code_challenge` and
 the `code_challenge_method`.
@@ -430,8 +439,11 @@ curl -X POST "${TOKEN_ENDPOINT}" \
   -d "code_verifier=${CODE_VERIFIER}" | python -m json.tool
 ```
 
-{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
-[Endpoints](#endpoints) table.{{% /alert %}}
+:::info
+
+You can find the _Token Endpoint_ in the [Endpoints](#endpoints) table.
+
+:::
 
 The authorization server transforms `code_verifier` and compares it to
 `code_challenge` from the first request. Access is denied if they are not equal.
@@ -471,8 +483,11 @@ curl -X POST "${TOKEN_ENDPOINT}" \
   -d "scope=openid%20email%20profile" | python -m json.tool;
 ```
 
-{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
-[Endpoints](#endpoints) table.{{% /alert %}}
+:::info
+
+You can find the _Token Endpoint_ in the [Endpoints](#endpoints) table.
+
+:::
 
 Example response:
 
@@ -500,8 +515,11 @@ curl -X POST "${TOKEN_ENDPOINT}" \
   -d "scope=openid%20email%20profile" | python -m json.tool;
 ```
 
-{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
-[Endpoints](#endpoints) table.{{% /alert %}}
+:::info
+
+You can find the _Token Endpoint_ in the [Endpoints](#endpoints) table.
+
+:::
 
 ##### Token Exchange
 
@@ -532,8 +550,11 @@ curl -X POST "${TOKEN_ENDPOINT}" \
   -d "scope=openid%20profile%20offline_access" | python -m json.tool;
 ```
 
-{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
-[Endpoints](#endpoints) table.{{% /alert %}}
+:::info
+
+You can find the _Token Endpoint_ in the [Endpoints](#endpoints) table.
+
+:::
 
 Example response:
 
@@ -579,8 +600,11 @@ curl -X POST "${DEVICE_CODE_ENDPOINT}" \
   -d "scope=openid%20email%20profile" | python -m json.tool
 ```
 
-{{% alert title="Note" color="info" %}} You can find the _Device Code Endpoint_
-in the [Endpoints](#endpoints) table.{{% /alert %}}
+:::info
+
+You can find the _Device Code Endpoint_ in the [Endpoints](#endpoints) table.
+
+:::
 
 Example response:
 
@@ -630,8 +654,11 @@ curl -X POST "${TOKEN_ENDPOINT}" \
   -d "scope=openid%20profile" | python -m json.tool
 ```
 
-{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
-[Endpoints](#endpoints) table.{{% /alert %}}
+:::info
+
+You can find the _Token Endpoint_ in the [Endpoints](#endpoints) table.
+
+:::
 
 Example response:
 
@@ -660,8 +687,11 @@ curl -X POST "${DEVICE_CODE_ENDPOINT}" \
   -d "code_challenge_method=S256" | python -m json.tool
 ```
 
-{{% alert title="Note" color="info" %}} You can find the _Device Code Endpoint_
-in the [Endpoints](#endpoints) table.{{% /alert %}}
+:::info
+
+You can find the _Device Code Endpoint_ in the [Endpoints](#endpoints) table.
+
+:::
 
 2 - Device Access Token Request
 
@@ -674,8 +704,11 @@ curl -X POST "${TOKEN_ENDPOINT}" \
   -d "code_verifier=${CODE_VERIFIER}" | python -m json.tool
 ```
 
-{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
-[Endpoints](#endpoints) table.{{% /alert %}}
+:::info
+
+You can find the _Token Endpoint_ in the [Endpoints](#endpoints) table.
+
+:::
 
 ### Claims-based authorisation
 

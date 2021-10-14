@@ -42,25 +42,37 @@ get started:
 
 7. If you agree to the Terms of Use, select the **I Agree** option.
 
-   {{% alert title="Important" color="warning" %}} You will not be able to agree
-   to the terms until you review them. {{% /alert %}}
+   :::caution
+
+   You will not be able to agree
+   to the terms until you review them.
+
+   :::
 
    ![RCIAM ToU agreement](../../static/img/user/tou-agreement.png)
 
 8. Finally, click **Submit** to submit your request.
 
-   {{% alert title="Important" color="warning" %}} You will not be able to
-   submit your request until you agree to the terms. {{% /alert %}}
+   :::caution
+
+   You will not be able to
+   submit your request until you agree to the terms.
+
+   ::
 
 9. After submitting your request, RCIAM will send you an email with a
    verification link. After you click that link, you'll be taken to the request
    confirmation page.
 
-   {{% alert title="Important" color="warning" %}} If you do not find the email
+   :::caution
+
+   If you do not find the email
    in your Inbox, please check your Spam or Junk folder for an email from "RCIAM
    AAI Notifications". If you do find the email in these folders, mark the email
    as "safe" or "not spam" to ensure that you receive any future notifications
-   about your RCIAM ID. {{% /alert %}}
+   about your RCIAM ID.
+
+   :::
 
 10. After reviewing your request, click **Confirm** and re-authenticate yourself
     using the Identity Provider you selected before.
