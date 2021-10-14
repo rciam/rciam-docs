@@ -19,28 +19,28 @@ get started:
 
    ![RCIAM IdP discovery](../../static/img/user/idp-discovery.png)
 
-2. Enter your login credentials to authenticate yourself with your Home
+1. Enter your login credentials to authenticate yourself with your Home
    Organisation
 
-3. After successful authentication, you may be prompted by your Home
+1. After successful authentication, you may be prompted by your Home
    Organisation to consent to the release of personal information to the **RCIAM
    AAI Service Provider Proxy**.
 
-4. After successful authentication, you will be redirected to the RCIAM account
+1. After successful authentication, you will be redirected to the RCIAM account
    registration form. On the introductory page, click **Begin** to start the
    registration process.
 
    ![RCIAM sign up intro](../../static/img/user/sign-up-intro.png)
 
-5. RCIAM requires some basic information from you, depending on the attributes
+1. RCIAM requires some basic information from you, depending on the attributes
    released by your Identity Provider, you may need to provide the values of the
    missing attributes.
 
    ![RCIAM sign up attributes](../../static/img/user/sign-up-attributes.png)
 
-6. On the registration form, click **Review Terms and Conditions**
+1. On the registration form, click **Review Terms and Conditions**
 
-7. If you agree to the Terms of Use, select the **I Agree** option.
+1. If you agree to the Terms of Use, select the **I Agree** option.
 
    :::caution
 
@@ -51,7 +51,7 @@ get started:
 
    ![RCIAM ToU agreement](../../static/img/user/tou-agreement.png)
 
-8. Finally, click **Submit** to submit your request.
+1. Finally, click **Submit** to submit your request.
 
    :::caution
 
@@ -60,7 +60,7 @@ get started:
 
    ::
 
-9. After submitting your request, RCIAM will send you an email with a
+1. After submitting your request, RCIAM will send you an email with a
    verification link. After you click that link, you'll be taken to the request
    confirmation page.
 
@@ -74,10 +74,10 @@ get started:
 
    :::
 
-10. After reviewing your request, click **Confirm** and re-authenticate yourself
+1. After reviewing your request, click **Confirm** and re-authenticate yourself
     using the Identity Provider you selected before.
 
-11. In the case of the **Sign Up** registration, you need to wait for an RCIAM User
+1. In the case of the **Sign Up** registration, you need to wait for an RCIAM User
     Sponsor to approve your request to join the RCIAM User Community. Upon
     approval, RCIAM AAI will send you a notification email.
 
@@ -109,6 +109,6 @@ member of and the roles assigned to the user within those Virtual Organisation.
 ### Linked identities
 
 Information about identites linked to your account. Check the
-[guide for linking accounts](../user/linking) for more information.
+[guide for linking accounts](../user/linking.md) for more information.
 
 ![Linked identities](../../static/img/user/profile-linked.png)

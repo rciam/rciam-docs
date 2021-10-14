@@ -14,8 +14,8 @@ from in order to access your service.
 
 To integrate your Service Provider with the RCIAM service, you need to
 create a registration request using the
-[RCIAM Federation Registry Portal](https://federation-demo.rciam.grnet.gr). You can also
-use the Federation Registry portal to request the reconfiguration or
+[RCIAM Federation Registry Portal](https://federation-demo.rciam.grnet.gr). You
+can also use the Federation Registry portal to request the reconfiguration or
 deregistration of an existing deployed service. Service registration requests
 typically require approval by an administrator. Please refer to the
 [Federation Registry Documentation](https://federation.rciam.grnet.gr/docs) for
@@ -208,10 +208,10 @@ the authenticated user.
 
 Before your service can use the RCIAM OIDC Provider for user login, you
 must submit a service registration request using
-[Federation Registry](https://federation-demo.rciam.grnet.gr) in order to obtain OAuth
-2.0 credentials. The client configuration should include the general information
-about your service, as described in [General Information](#general-information)
-section.
+[Federation Registry](https://federation-demo.rciam.grnet.gr) in order to
+obtain OAuth 2.0 credentials. The client configuration should include the
+general information about your service, as described in
+[General Information](#general-information) section.
 
 #### Obtaining OAuth 2.0 credentials
 
@@ -362,7 +362,8 @@ will not be useful since the token request relies on the initial secret.
 ###### Client configuration
 
 To enable PKCE you need to go to the
-[Manage Services Page](https://federation-demo.rciam.grnet.gr) and create/edit a client.
+[Manage Services Page](https://federation-demo.rciam.grnet.gr) and create/edit
+a client.
 In "Protocol" tab under "Token Endpoint Authentication Method" select "No
 authentication" and in "Crypto" tab under "Proof Key for Code Exchange (PKCE)
 Code Challenge Method" select "SHA-256 hash algorithm".
@@ -1226,8 +1227,8 @@ urn:mace:example.org:res:example-res#rciam.example.org
 
 ### Identity Assurance
 
-Based on the authentication method selected by the user, the RCIAM proxy assigns a
-Identity Assurance, which is conveyed to the SP through both the
+Based on the authentication method selected by the user, the RCIAM proxy
+assigns a Identity Assurance, which is conveyed to the SP through both the
 `eduPersonAssurance` attribute and the Authentication Context Class
 (`AuthnContextClassRef`) of the SAML authentication response. RCIAM uses
 Assurance Profiles which distinguish between three Identity Assurance levels,

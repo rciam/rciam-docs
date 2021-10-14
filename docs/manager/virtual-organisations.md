@@ -13,7 +13,7 @@ In simple terms a Virtual Organisation (VO) is just a group of users. In
 RCIAM VOs are created to group researchers who aim to share resources across the
 services to achieve a common goal as part of a scientific collaboration.
 For a more formal definition of VO please look at the
-[RCIAM Glossary](../glossary).
+[RCIAM Glossary](../glossary.md).
 
 If you are interested in creating your own VO, please see instructions in the
 section [below](#vo-management).
@@ -27,7 +27,7 @@ organised in a hierarchical structure for creating groups or subgroups within a
 VO.
 
 It is assumed that VO managers and members have already registered their RCIAM
-account (A step-by-step guide is provided in this [link](../user/signup).
+account (A step-by-step guide is provided in this [link](../user/signup.md).
 
 ### Registering your VO
 
@@ -99,7 +99,7 @@ information for every (sub)group that you need to add/remove to/from your VO:
 - **Group name**
 - **Group description**
 - Optional, **Group manager(s)**, i.e. the RCIAM identifiers (in the form of
-  `"xxxxxxx@example.org"`) of one or more users responsible for managing the VO group
+  `"xyz@example.org"`) of one or more users responsible for managing the VO group
   members. Group managers can also appoint other users as (sub)group managers.
   The manager(s) of the VO (or any parent group) are implicitly managers of the
   group. You can provide additional RCIAM user identifiers to extend the list
@@ -143,7 +143,7 @@ From the VO members list (see [Viewing VO members](#viewing-vo-members) above):
 
    ![VO population to edit](../../static/img/manager/vo-population-remove.png)
 
-2. Under **Role Attributes** click **Delete** on the right of the COU entry of
+1. Under **Role Attributes** click **Delete** on the right of the COU entry of
    interest (for example, vo.example.com). On success the selected row will be
    removed. In this example we removed the **group1.vo.example.org** that we previously
    added.
@@ -170,7 +170,7 @@ by any VO admin.
 1. Navigate to Co Person Role view
    ![CO person role view](../../static/img/manager/co-person-role-path.png)
 
-2. Choose Affiliation from drop down list
+1. Choose Affiliation from drop down list
    ![VO affiliation](../../static/img/manager/vo-affiliation.png)
 
 #### Update User's VO Role
@@ -178,7 +178,7 @@ by any VO admin.
 1. Navigate to Co Person Role view
    ![CO person role view](../../static/img/manager/co-person-role-path.png)
 
-2. Choose Role from drop down list, if available, or add custom text if no list
+1. Choose Role from drop down list, if available, or add custom text if no list
    is present. ![Role title](../../static/img/manager/role-title.png)
 
 Subsequently, RCIAM uses the CO Person's group membership and role
@@ -253,7 +253,7 @@ From the steps defined [above](#managing-cou-admin-members):
 
    ![Manage Group Memberships link](../../static/img/manager/manage-group-link.png)
 
-2. **Filter** out the CO Person you need to apply for the admin role. Use
+1. **Filter** out the CO Person you need to apply for the admin role. Use
    **Given, Family Name, Email, Identifier** or a combination of the former.
 
    ![RCIAM CO people filter](../../static/img/manager/co-people-filter.png)
@@ -314,7 +314,7 @@ be supported in the future.
          "VoId": "vo.example.org",
          "Person": {
            "Type": "CO",
-           "Id": "01234567890123456789@example.org"
+           "Id": "xyz@example.org"
          },
          "Status": "Active",
          "ValidFrom": "2017-05-21",
@@ -327,7 +327,7 @@ be supported in the future.
 1. Retrieving the VO membership information for a given RCIAM ePUID:
 
    ```sh
-   curl -vX GET https://rciam.example.org/api/v1/VoMembers/01234567890123456789@example.org \
+   curl -vX GET https://rciam.example.org/api/v1/VoMembers/xyz@example.org \
         --user "example-client":"veryverysecret"
    ```
 
@@ -337,7 +337,7 @@ be supported in the future.
    [
      {
        "id": 85,
-       "epuid": "01234567890123456789@example.org",
+       "epuid": "xyz@example.org",
        "vo_id": "vo.example.org",
        "valid_from": "2017-05-20T22:00:00.000Z",
        "valid_through": "2017-06-21T22:00:00.000Z",
