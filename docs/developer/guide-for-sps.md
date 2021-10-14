@@ -1,0 +1,1221 @@
+---
+sidebar_position: 1
+---
+
+# Service Providers
+
+This page contains information about connecting services to
+RCIAM in order to allow user
+login through RCIAM and to receive users' attributes. RCIAM is connected
+to a wide range of academic and social Identity Providers that users can choose
+from in order to access your service.
+
+## Service Provider integration workflow
+
+To integrate your Service Provider with the RCIAM service, you need to
+create a registration request using the
+[RCIAM Federation Registry Portal](https://federation-demo.rciam.grnet.gr). You can also
+use the Federation Registry portal to request the reconfiguration or
+deregistration of an existing deployed service. Service registration requests
+typically require approval by an administrator. Please refer to the
+[Federation Registry Documentation](https://federation.rciam.grnet.gr/docs) for
+more information.
+
+The integration follows a two-step process:
+
+1. Register your Service Provider and test integration with the **demo**
+   instance of RCIAM by selecting the "Demo" integration environment
+   during registration through the RCIAM Federation Registry Portal. The demo
+   instance allows for testing authentication and authorisation through the
+   academic and social Identity Providers connected to RCIAM without
+   affecting the production RCIAM service. Note that while the demo instance
+   has identical functionality to the production instance, no information is
+   shared between the two systems.
+1. Register your Service Provider with the **production** instance of RCIAM
+   by selecting the "Production" integration environment during
+   registration through the RCIAM Federation Registry Portal. The production
+   instance allows access to your service through the academic and social
+   Identity Providers connected to RCIAM. This requires that your service
+   integration has been thoroughly tested during Step 1.
+
+The most important URLs for each environment are listed in the table below but
+more information can be found in the protocol-specific sections that follow.
+
+<!-- markdownlint-disable line-length -->
+
+| Protocol       | Demo environment                                                       | Production environment                                            |
+| -------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| SAML           | <https://rciam-demo.example.org/proxy/saml2/idp/metadata.php>          | <https://rciam.example.org/proxy/saml2/idp/metadata.php>          |
+| OpenID Connect | <https://rciam-demo.example.org/oidc/.well-known/openid-configuration> | <https://rciam.example.org/oidc/.well-known/openid-configuration> |
+
+<!-- markdownlint-enable line-length -->
+
+## General Information
+
+RCIAM supports two authentication and authorisation protocols that you
+can choose from:
+
+1. [Security Assertion Markup Language (SAML) 2.0](http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html)
+1. [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) - an
+   extension to [OAuth 2.0](https://tools.ietf.org/html/rfc6749)
+
+Regardless of which of the two protocols you are going to use, you need to
+provide the following information to connect your service to RCIAM:
+
+1. Name of the service (in English and optionally in other languages supported
+   by the service)
+1. Short description of the service
+1. Website (URL) for localised information about the service; the content found
+   at the URL SHOULD provide more complete information than what provided by the
+   description
+1. Contact information of the following types:
+   - Helpdesk/Support contact information (for redirecting user)
+   - Administrative
+   - Technical
+   - Security/incident response
+1. Privacy statement URL: The privacy policy is used to document the data
+   collected and processed by the service. You can use the
+   [Privacy Policy template](https://docs.google.com/document/d/1ZU7VjH3g7qcfWcz0Z8TTv-vQiVoRA_wOsuMyJaz28Og/edit)
+1. Logo URL (optional for showing in catalogues); if provided, logos SHOULD:
+   - use a transparent background where appropriate to facilitate the usage of
+     logos within a user interface
+   - use PNG, or GIF (less preferred), images
+   - use HTTPS URLs in order to avoid mixed-content warnings within browsers
+   - have a size larger than 40000 and smaller than 50000 characters when
+     encoded in base64
+1. Country of the service
+1. Compliance with the policies
+
+## SAML Service Provider
+
+To enable federated access to a web-based application, you can connect to the
+RCIAM IdP as a SAML Service Provider (SP). Users of the application will
+be redirected to RCIAM in order to log in, and RCIAM can authenticate them
+using any of the supported backend authentication mechanisms, such as
+institutional IdPs registered with eduGAIN or Social Providers. Once the user is
+authenticated, RCIAM will return a SAML assertion to the application
+containing information about the authenticated user.
+
+### Metadata registration
+
+SAML authentication relies on the use of metadata. Both parties (you as a SP and
+the RCIAM IdP) need to exchange metadata in order to know and trust each
+other. The metadata include information such as the location of the service
+endpoints that need to be invoked, as well as the certificates that will be used
+to sign SAML messages. The format of the exchanged metadata should be based on
+the XML-based
+[SAML 2.0 specification](https://docs.oasis-open.org/security/saml/v2.0/saml-metadata-2.0-os.pdf).
+Usually, you will not need to manually create such an XML document, as this is
+automatically generated by all major SAML 2.0 SP software solutions (e.g.,
+Shibboleth, SimpleSAMLphp, and `mod_auth_mellon`). It is important that you
+serve your metadata over HTTPS using a browser-friendly SSL certificate, i.e.
+issued by a trusted certificate authority.
+
+You can get the metadata of the RCIAM IdP Proxy on a dedicated URL that
+depends on the integration environment being used:
+
+<!-- markdownlint-disable line-length -->
+
+| Demo environment                                              | Production environment                                   |
+| ------------------------------------------------------------- | -------------------------------------------------------- |
+| <https://rciam-demo.example.org/proxy/saml2/idp/metadata.php> | <https://rciam.example.org/proxy/saml2/idp/metadata.php> |
+
+<!-- markdownlint-enable line-length -->
+
+To register your SAML SP, you must submit a service registration request at
+[Federation Registry](https://federation-demo.rciam.grnet.gr). Your request should
+include the general information about your service (see
+[General Information](#general-information)) and the SP's metadata and entity
+id.
+
+### Metadata
+
+Metadata provided by your SP should contain a descriptive name of the service
+that your SP represents in at least English. It is recommended to also provide
+the name in other languages which are commonly used in the geographic scope of
+the deployment. The name should be placed in the `<md:ServiceName>` in the
+`<md:AttributeConsumingService>` container.
+
+It is recommended that the `<md:IDPSSODescriptor>` element included in your SP
+metadata contains both an `AuthnRequestsSigned` and an `WantAssertionsSigned`
+attribute set to `true`.
+
+Your SP metadata should also contain contact information for support and for a
+technical contact. The `<md:EntityDescriptor>` element should contain both a
+`<md:ContactPerson>` element with a `contactType` of `"support"` and a
+`<md:ContactPerson>` element with a `contactType` of `"technical"`. The
+`<md:ContactPerson>` elements should contain at least one `<md:EmailAddress>`.
+The support address may be used for generic support questions about the service,
+while the technical contact may be contacted regarding technical
+interoperability problems. The technical contact must be responsible for the
+technical operation of the service represented by your SP.
+
+### Attributes
+
+The RCIAM IdP is guaranteed to release a minimal subset of the
+[REFEDS R&S](https://refeds.org/category/research-and-scholarship) attribute
+bundle to connected Service Providers without administrative involvement,
+subject to user consent. The following attributes constitute a minimal subset of
+the R&S attribute bundle:
+
+- Persistent, non-reassignable, non-targeted, opaque, globally unique RCIAM user
+  ID (`eduPersonUniqueId`); this is always scoped `@example.org`
+- Email address (`mail`)
+- Display name (`displayName`) OR (`givenName` AND `sn`)
+
+A more extensive list of all the attributes that may be made available to
+Service Providers is included in the [User Attribute](#user-attributes) section.
+
+### Attribute-based authorisation
+
+RCIAM provides information about the authenticated user that may be used
+by Service Providers in order to control user access to resources. This
+information is provided by the RCIAM IdP in the
+[SAML attribute assertion](#attributes). The table below lists the SAML
+attributes that are relevant for user authorisation:
+
+<!-- markdownlint-disable line-length -->
+
+| Description                                                                                     | SAML Attribute         |
+| ----------------------------------------------------------------------------------------------- | ---------------------- |
+| [VO/group membership/roles of the authenticated user](#vogroup-membership-and-role-information) | `eduPersonEntitlement` |
+| [Capabilities](#capabilities)                                                                   | `eduPersonEntitlement` |
+| [Identity Assurance](#identity-assurance)                                                       | `eduPersonAssurance`   |
+
+<!-- markdownlint-enable line-length -->
+
+### References
+
+- [Shibboleth Service Provider Documentation](https://shibboleth.atlassian.net/wiki/spaces/SP3/overview)
+- [SimpleSAMLphp Service Provider QuickStart](https://simplesamlphp.org/docs/stable/simplesamlphp-sp)
+- [Simple SAML 2.0 service provider with mod_auth_mellon Apache module](https://github.com/latchset/mod_auth_mellon)
+
+## OpenID Connect Service Provider
+
+Service Providers can be integrated with RCIAM using OpenID Connect
+(OIDC) as an alternative to the SAML2 protocol. To allow this, the RCIAM
+IdP provides an OpenID Connect (OAuth2) API based on
+[MITREid Connect](https://github.com/mitreid-connect/OpenID-Connect-Java-Spring-Server),
+which has been
+[certified by the OpenID Foundation](http://openid.net/certification/).
+Interconnection with the RCIAM OIDC Provider allows users to sign in
+using any of the supported backend authentication mechanisms, such as
+institutional IdPs registered with eduGAIN or Social Providers. Once the user
+has signed in, RCIAM can return OIDC Claims containing information about
+the authenticated user.
+
+### Client registration
+
+Before your service can use the RCIAM OIDC Provider for user login, you
+must submit a service registration request using
+[Federation Registry](https://federation-demo.rciam.grnet.gr) in order to obtain OAuth
+2.0 credentials. The client configuration should include the general information
+about your service, as described in [General Information](#general-information)
+section.
+
+#### Obtaining OAuth 2.0 credentials
+
+You need OAuth 2.0 credentials, which typically include a client ID and client
+secret, to authenticate users through the RCIAM OIDC Provider.
+
+You can specify the client ID and secret when creating/editing your client or
+let them being automatically generated during registration (_recommended_).
+
+To find the ID and secret of your client, do the following:
+
+1. Select your client from the
+   [Manage Services Page](https://federation-demo.rciam.grnet.gr).
+1. Look for the **Client ID** in the **Protocol** tab.
+1. Select the **Display/edit client secret:** option from the **Protocol** tab.
+
+{{% alert title="Note" color="info" %}} You can copy these values using the
+green copy button next to the desired field.{{% /alert %}}
+
+#### Setting one or more Redirection URIs
+
+The Redirection URI(s) that you set when creating/editing your client determine
+where the RCIAM OIDC Provider sends responses to your authentication
+requests. Note that the Redirection URI MUST use the `https` scheme; the use of
+`http` Redirection URIs is only allowed in the demo environment.
+
+To find the Redirection URI(s) for your client, do the following:
+
+1. Open the [Manage Services](https://federation-demo.rciam.grnet.gr)
+1. Find the redirect URIs for your client listed under the **Protocol** column
+   of the overview table or **Edit** the particular client and look for the
+   **Redirect URI(s)** in the **Protocol** tab.
+
+#### Setting additional information about the client
+
+It is strongly suggested that you add a short **description** and a **logo** for
+the client. Lastly, you need to set the email addresses of one or more contacts.
+
+### Claims
+
+The RCIAM UserInfo Endpoint is an OAuth 2.0 Protected Resource that
+returns specific information about the authenticated End-User as Claim Values.
+To obtain the requested Claims about the End-User, the Client makes a request to
+the UserInfo Endpoint using an Access Token obtained through OpenID Connect
+Authentication. The scopes associated with the Access Token used to access the
+RCIAM UserInfo Endpoint will determine what Claims will be released.
+These Claims are represented by a JSON object that contains a collection of name
+and value pairs for the Claims.
+
+The following scope values can be used to request Claims from the RCIAM
+UserInfo Endpoint:
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+| Scope                          | Claims                                                                                           |
+| ------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `openid`                       | `sub`                                                                                            |
+| `profile`                      | <ul><li>`name`</li><li>`given_name`</li><li>`family_name`</li><li>`preferred_username`</li></ul> |
+| `email`                        | <ul><li>`email`</li><li>`email_verified`</li><li>`voperson_verified_email`</li></ul>             |
+| `eduperson_scoped_affiliation` | `eduperson_scoped_affiliation`                                                                   |
+| `eduperson_entitlement`        | `eduperson_entitlement`                                                                          |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+A more extensive list of all the attributes that may be made available to
+Service Providers is included in the [User Attribute](#user-attributes) section.
+
+### Grant Types
+
+RCIAM supports the following OpenID Connect/OAuth2 grant types:
+
+- Authorization Code: used by Web Apps executing on a server.
+- Token Exchange: used by clients to request and obtain security tokens in
+  support of delegated access to resources.
+- Device Code: used by devices that lack a browser to perform a user-agent based
+  OAuth flow.
+
+### Endpoints
+
+The most important OIDC/OAuth2 endpoints are listed below:
+
+<!-- markdownlint-disable line-length -->
+
+| Endpoint               | Demo environment                                                       | Production environment                                            |
+| ---------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Provider configuration | <https://rciam-demo.example.org/oidc/.well-known/openid-configuration> | <https://rciam.example.org/oidc/.well-known/openid-configuration> |
+| Client registration    | <https://federation-demo.rciam.grnet.gr>                               | <https://federation-demo.rciam.grnet.gr>                          |
+| Authorisation          | <https://rciam-demo.example.org/oidc/authorize>                        | <https://rciam.example.org/oidc/authorize>                        |
+| Token                  | <https://rciam-demo.example.org/oidc/token>                            | <https://rciam.example.org/oidc/token>                            |
+| Device Code            | <https://rciam-demo.example.org/oidc/devicecode>                       | <https://rciam.example.org/oidc/devicecode>                       |
+| JSON Web Key(jwt)      | <https://rciam-demo.example.org/oidc/jwk>                              | <https://rciam.example.org/oidc/jwk>                              |
+| User Info              | <https://rciam-demo.example.org/oidc/userinfo>                         | <https://rciam.example.org/oidc/userinfo>                         |
+| Introspection          | <https://rciam-demo.example.org/oidc/introspect>                       | <https://rciam.example.org/oidc/introspect>                       |
+
+<!-- markdownlint-enable line-length -->
+
+#### Authorization Endpoint
+
+The Authorization Endpoint performs Authentication of the End-User. This is done
+by sending the User Agent to the Authorization Server\'s Authorization Endpoint
+for Authentication and Authorization, using request parameters defined by OAuth
+2.0 and additional parameters and parameter values defined by OpenID Connect.
+
+The request parameters of the Authorization endpoint are:
+
+- `client_id`: id of the client that ask for authentication to the Authorization
+  Server.
+- `redirect_uri`: URI to which the response will be sent.
+- `scope`: A list of attributes that the application requires.
+- `state`: Opaque value used to maintain state between the request and the
+  callback.
+- `response_type`: value that determines the authorization processing flow to be
+  used. For **Authorization Code** grant set `response_type=code`. This way the
+  response will include an authorization code.
+
+#### Token Endpoint
+
+To obtain an Access Token, an ID Token, and optionally a Refresh Token, the
+Client sends a Token Request to the Token Endpoint.
+
+Depending on the grant type, the following parameters are required:
+
+##### Authorization Code
+
+<!-- markdownlint-disable line-length -->
+
+| Parameter      | Presence | Values                                                                                             |
+| -------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| `grant_type`   | Required | `authorization_code`                                                                               |
+| `code`         | Required | The value of the code in the response from authorization endpoint.                                 |
+| `redirect_uri` | Required | URI to which the response will be sent (must be the same as the request to authorization endpoint) |
+
+<!-- markdownlint-enable line-length -->
+
+##### Proof Key for Code Exchange (PKCE)
+
+The Proof Key for Code Exchange (PKCE, pronounced pixie) extension
+([RFC 7636](https://tools.ietf.org/html/rfc7636)) describes a technique for
+public clients (clients without `client_secret`) to mitigate the threat of
+having the authorization code intercepted. The technique involves the client
+first creating a secret, and then using that secret again when exchanging the
+authorization code for an access token. This way if the code is intercepted, it
+will not be useful since the token request relies on the initial secret.
+
+###### Client configuration
+
+To enable PKCE you need to go to the
+[Manage Services Page](https://federation-demo.rciam.grnet.gr) and create/edit a client.
+In "Protocol" tab under "Token Endpoint Authentication Method" select "No
+authentication" and in "Crypto" tab under "Proof Key for Code Exchange (PKCE)
+Code Challenge Method" select "SHA-256 hash algorithm".
+
+###### Protocol Flow
+
+Because the PKCE-enhanced Authorization Code Flow builds upon the standard
+Authorization Code Flow, the steps are very similar.
+
+First, the client creates and records a secret named the `code_verifier`. The
+`code_verifier` is a high-entropy cryptographic random STRING using the
+unreserved characters [A-Z] / [a-z] / [0-9] / "-" / "." / "\_" / "~", with a
+minimum length of 43 characters and a maximum length of 128 characters. Then the
+client creates a `code_challenge` derived from the `code_verifier` by using one
+of the following transformations on the code verifier:
+
+- `plain` code_challenge = code_verifier
+- `S256` code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier)))
+
+If the client is capable of using `S256`, it MUST use `S256`. Clients are
+permitted to use `plain` only if they cannot support `S256` for some technical
+reason.
+
+{{% alert title="Note" color="info" %}} There are various tools that generate
+these values such as <https://tonyxu-io.github.io/pkce-generator/>
+{{% /alert %}}
+
+Then the `code_challenge` is sent in the Authorization Request along with the
+transformation method (`code_challenge_method`).
+
+Example request:
+
+```shell
+GET "${AUTHORISATION_ENDPOINT}?
+      client_id=${CLIENT_ID}
+      &scope=openid%20profile%20email
+      &redirect_uri=${REDIRECT_URI}
+      &response_type=code
+      &code_challenge=${CODE_CHALLENGE}
+      &code_challenge_method=S256"
+```
+
+{{% alert title="Note" color="info" %}} You can find the _Authorisation
+Endpoint_ in the [Endpoints](#endpoints) table.{{% /alert %}}
+
+The Authorization Endpoint responds as usual but records `code_challenge` and
+the `code_challenge_method`.
+
+Example response:
+
+```shell
+HTTP/1.1 302 Found
+  Location: ${REDIRECT_URI}?
+    code=fgtLHT
+```
+
+The client then sends the authorization code in the Access Token Request as
+usual but includes the `code_verifier` secret generated in the first request.
+
+Example request:
+
+```shell
+curl -X POST "${TOKEN_ENDPOINT}" \
+  -d "grant_type=authorization_code" \
+  -d "code=${CODE}" \
+  -d "client_id=${CLIENT_ID}" \
+  -d "redirect_uri=${REDIRECT_URI}" \
+  -d "code_verifier=${CODE_VERIFIER}" | python -m json.tool
+```
+
+{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
+[Endpoints](#endpoints) table.{{% /alert %}}
+
+The authorization server transforms `code_verifier` and compares it to
+`code_challenge` from the first request. Access is denied if they are not equal.
+
+Example response:
+
+```json
+{
+  "access_token": "eyJraWQiOiJvaWRjIiwiYWxnIjoiUlMyNTYifQ...",
+  "expires_in": 3599,
+  "id_token": "eyJraWQiOiJvaWRjIiwiYWxnIjoiUlMyNTYifQ...",
+  "scope": "openid email profile",
+  "token_type": "Bearer"
+}
+```
+
+##### Refresh request
+
+The following request allows obtaining an access token from a refresh token
+using the `grant_type` value `refresh_token`:
+
+| Parameter       | Presence | Values                                        |
+| --------------- | -------- | --------------------------------------------- |
+| `client_id`     | Required | The identifier of the client.                 |
+| `client_secret` | Required | The secret value of the client.               |
+| `grant_type`    | Required | `refresh_token`                               |
+| `refresh_token` | Required | `The value of the refresh token`              |
+| `scope`         | Required | This parameter should contain openid at least |
+
+Example request:
+
+```shell
+curl -X POST "${TOKEN_ENDPOINT}" \
+  -u "${CLIENT_ID}":"${CLIENT_SECRET}" \
+  -d "grant_type=refresh_token" \
+  -d "refresh_token=${REFRESH_TOKEN}" \
+  -d "scope=openid%20email%20profile" | python -m json.tool;
+```
+
+{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
+[Endpoints](#endpoints) table.{{% /alert %}}
+
+Example response:
+
+```json
+{
+  "access_token": "eyJraWQiOiJvaWRjIiwiYWx...",
+  "expires_in": 3599,
+  "id_token": "eyJraWQiOiJvaWRjIiwiYW...",
+  "refresh_token": "eyJhbGciOiJub25...",
+  "scope": "openid profile email",
+  "token_type": "Bearer"
+}
+```
+
+###### Refresh Request with PKCE
+
+To combine the refresh token grant type with PKCE you need to make the following
+request:
+
+```shell
+curl -X POST "${TOKEN_ENDPOINT}" \
+  -d "client_id=${CLIENT_ID}" \
+  -d "grant_type=refresh_token" \
+  -d "refresh_token=${REFRESH_TOKEN}" \
+  -d "scope=openid%20email%20profile" | python -m json.tool;
+```
+
+{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
+[Endpoints](#endpoints) table.{{% /alert %}}
+
+##### Token Exchange
+
+To get a token from client B using a token issued for client A, the parameters
+of the request are:
+
+<!-- markdownlint-disable line-length -->
+
+| Parameter            | Presence | Values                                                                                                    |
+| -------------------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `grant_type`         | Required | `urn:ietf:params:oauth:grant-type:token-exchange`                                                         |
+| `audience`           | Optional | Define the logical name of the service that the token will be used for                                    |
+| `subject_token`      | Required | The value of the access token                                                                             |
+| `subject_token_type` | Required | `urn:ietf:params:oauth:token-type:access_token` (because this feature accepts access tokens only)         |
+| `scope`              | Optional | Define one or more scopes that are contained in the original token; otherwise all scopes will be selected |
+
+<!-- markdownlint-enable line-length -->
+
+Example request:
+
+```shell
+curl -X POST "${TOKEN_ENDPOINT}" \
+  -u "${CLIENT_B_ID}":"${CLIENT_B_SECRET}" \
+  -d "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
+  -d "audience=tokenExchange" \
+  -d "subject_token=${ACCESS_TOKEN_A}" \
+  -d "subject_token_type=urn:ietf:params:oauth:token-type:access_token" \
+  -d "scope=openid%20profile%20offline_access" | python -m json.tool;
+```
+
+{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
+[Endpoints](#endpoints) table.{{% /alert %}}
+
+Example response:
+
+```json
+{
+  "access_token": "eyJraWQiOiJvaWRjIiwiYWxnIjoiUl...",
+  "expires_in": 3599,
+  "id_token": "eyJraWQiOiJvaWRjIiwiYWxnIjoiUl...",
+  "refresh_token": "eyJhbGciOiJub25lIn0.eyJleHAiO...",
+  "scope": "openid profile offline_access",
+  "token_type": "Bearer"
+}
+```
+
+##### Device Code
+
+The device code flow enables OAuth clients on (input-constrained) devices to
+obtain user authorization for accessing protected resources without using an
+on-device user-agent, provided that they have an Internet connection.
+
+###### 1. Device Authorization Request
+
+The client initiates the authorization flow by requesting a set of
+verification codes from the authorization server by making an HTTP "POST"
+request to the device authorization endpoint. The client constructs the request
+with the following parameters:
+
+<!-- markdownlint-disable line-length -->
+
+| Parameter   | Presence | Values                                                                                                    |
+| ----------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `client_id` | Required | The identifier of the client                                                                              |
+| `scope`     | Optional | Define one or more scopes that are contained in the original token; otherwise all scopes will be selected |
+
+<!-- markdownlint-enable line-length -->
+
+Example request:
+
+```shell
+curl -X POST "${DEVICE_CODE_ENDPOINT}" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "client_id=${CLIENT_ID}" \
+  -d "scope=openid%20email%20profile" | python -m json.tool
+```
+
+{{% alert title="Note" color="info" %}} You can find the _Device Code Endpoint_
+in the [Endpoints](#endpoints) table.{{% /alert %}}
+
+Example response:
+
+```json
+{
+  "device_code": "c4341bd6-5e82-4f9c-9f6f-5842409d48db",
+  "expires_in": 600,
+  "user_code": "IEJSJB",
+  "verification_uri": "https://rciam.example.org/oidc/device"
+}
+```
+
+###### 2. User Interaction
+
+After receiving a successful Authorization Response, the client displays or
+otherwise communicates the `user_code` and the `verification_uri` to the end
+user and instructs them to visit the URI in a user agent on a secondary
+device (for example, in a browser on their mobile phone), and enter the
+user code.
+
+###### 3. Device Access Token Request
+
+After displaying instructions to the user, the client makes an Access Token
+Request to the token endpoint. The request contains the following parameters:
+
+<!-- markdownlint-disable line-length -->
+
+| Parameter       | Presence | Values                                                                                                    |
+| --------------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `grant_type`    | Required | `urn:ietf:params:oauth:grant-type:device_code`                                                            |
+| `device_code`   | Required | The device verification code, `device_code` from the Device Authorization Response                        |
+| `client_id`     | Required | The identifier of the client                                                                              |
+| `client_secret` | Required | The secret value of the client                                                                            |
+| `scope`         | Optional | Define one or more scopes that are contained in the original token; otherwise all scopes will be selected |
+
+<!-- markdownlint-enable line-length -->
+
+Example request:
+
+```shell
+curl -X POST "${TOKEN_ENDPOINT}" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code" \
+  -d "device_code=${DEVICE_CODE}" \
+  -d "client_id=${CLIENT_ID}" \
+  -d "client_secret=${CLIENT_SECRET}" \
+  -d "scope=openid%20profile" | python -m json.tool
+```
+
+{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
+[Endpoints](#endpoints) table.{{% /alert %}}
+
+Example response:
+
+```json
+{
+  "access_token": "eyJraWQiOiJyc2ExIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbiIs...",
+  "expires_in": 3599,
+  "id_token": "eyJraWQiOiJyc2ExIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI5MDM0Mi...",
+  "scope": "openid profile",
+  "token_type": "Bearer"
+}
+```
+
+###### Device Code with PKCE
+
+To combine Device Code flow with PKCE you need to make the following requests:
+
+1 - Device Authorization Request:
+
+```shell
+curl -X POST "${DEVICE_CODE_ENDPOINT}" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "client_id=${CLIENT_ID}" \
+  -d "scope=openid%20email%20profile" \
+  -d "code_challenge=${CODE_CHALLENGE}" \
+  -d "code_challenge_method=S256" | python -m json.tool
+```
+
+{{% alert title="Note" color="info" %}} You can find the _Device Code Endpoint_
+in the [Endpoints](#endpoints) table.{{% /alert %}}
+
+2 - Device Access Token Request
+
+```shell
+curl -X POST "${TOKEN_ENDPOINT}" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code" \
+  -d "device_code=${DEVICE_CODE}" \
+  -d "client_id=${CLIENT_ID}" \
+  -d "code_verifier=${CODE_VERIFIER}" | python -m json.tool
+```
+
+{{% alert title="Note" color="info" %}} You can find the _Token Endpoint_ in the
+[Endpoints](#endpoints) table.{{% /alert %}}
+
+### Claims-based authorisation
+
+RCIAM provides information about the authenticated user that may be used
+by Service Providers in order to control user access to resources. This
+information is provided by the RCIAM OIDC Provider in the form of
+[OIDC claims](#claims). The table below lists the claims that are relevant for
+user authorisation:
+
+<!-- markdownlint-disable line-length -->
+
+| Description                                                                                     | OIDC Claim              |
+| ----------------------------------------------------------------------------------------------- | ----------------------- |
+| [VO/group membership/roles of the authenticated user](#vogroup-membership-and-role-information) | `eduperson_entitlement` |
+| [Capabilities](#capabilities)                                                                   | `eduperson_entitlement` |
+| [Identity Assurance](#identity-assurance)                                                       | `eduperson_assurance`   |
+
+<!-- markdownlint-enable line-length -->
+
+### Example OIDC Client
+
+In this guide we will demonstrate how to install and configure a
+[Simple OIDC Client](https://github.com/rciam/simple-oidc-client-php).
+
+#### Install simple-oidc-client-php
+
+This guide assumes the Apache HTTP server has been installed and the document
+root is `/var/www/html`
+
+Move to the apache document root and download and extract
+[simple-oidc-client-php-v2.0.0.zip](https://github.com/rciam/simple-oidc-client-php/releases/download/v2.0.0/simple-oidc-client-php-v2.0.0.zip).
+
+#### Configure Client
+
+Login to the [RCIAM Federation Registry](https://federation-demo.rciam.grnet.gr)
+
+Then create a new service or edit your existing service. In `General` tab fill
+all the required fields. For `Integration Environment` select `Demo`. In
+`Protocol Specific` tab select as Protocol the `OIDC Service` and then in the
+`Redirect URI(s)` insert your simple-oidc-client-php URL (e.g.
+`http://localhost/simple-oidc-client-php/refreshtoken.php`). This URL must link
+to `refreshtoken.php` which is located in simple-oidc-client-php directory.
+Next, in `Scope` select the scopes that your service needs. Then, submit the
+form and and self approve it. Finally you should get a pair of `Client ID` and
+`Client Secret`.
+
+#### Configure simple-oidc-client-php
+
+Now that you have everything you need, you can configure your login settings. Go
+to your terminal and open `config.php` with your favorite text editor.
+
+Example:
+
+```shell
+vi simple-oidc-client-php/config.php
+```
+
+Let's go quickly through the settings:
+
+- `title` required, the title on the navigation bar
+- `img` required, the source of the logo
+- `scope_info` optional, a message that informs the user for the application
+  requirements
+- `issuer` required, the base URL of our IdentityServer instance. This will
+  allow oidc-client to query the metadata endpoint so it can validate the tokens
+- `client_id` required, the id of the client we want to use when hitting the
+  authorization endpoint
+- `client_secret` optional, a value the offers better security to the message
+  flow
+- `pkceCodeChallengeMethod` optional, a string that defines the code challenge
+  method for PKCE. Choose between `plain` or `S256`.
+- `redirect_url` required, the redirect URL where the client and the browser
+  agree to send and receive correspondingly the code
+- `scopesDefine` required, defines the scopes the client supports
+- `refresh_token_note` optional, info for the refresh token
+- `access_token_note` optional, info for the access token
+- `manage_token_note` optional, message the informs the user where can manage
+  his tokens
+- `manageTokens` optional, URL of the manage tokens service
+- `sessionName` required, define the name of the cookie session
+- `sessionLifetime` required, define the duration of the session. This must be
+  equal to the validity time of the access token.
+
+You must change the followings options based on your Service configuration you
+setup earlier:
+
+- `issuer`
+- `client_id`
+- `client_secret`
+- `redirect_url`
+- `scopesDefine`
+- `sessionName` (based on the installation path of the portal)
+
+An example configuration follows:
+
+```php
+<?php
+// index.php interface configuration
+$title = "Generate Tokens";
+$img = "https://clickhelp.co/images/feeds/blog/2016.05/keys.jpg";
+$scope_info = "This service requires the following permissions for your account:";
+
+// Client configuration
+$issuer = "https://rciam-demo.example.org/oidc/";
+$client_id = "CHANGE_ME";
+$client_secret = "CHANGE_ME";  // comment if you are using PKCE
+// $pkceCodeChallengeMethod = "S256";   // uncomment to use PKCE
+$redirect_url = "http://localhost/simple-oidc-client-php/refreshtoken.php";
+// add scopes as keys and a friendly message of the scope as value
+$scopesDefine = array(
+    'openid' => 'log in using your identity',
+    'email' => 'read your email address',
+    'profile' => 'read your basic profile info',
+);
+// refreshtoken.php interface configuration
+$refresh_token_note = "NOTE: New refresh tokens expire in 12 months.";
+$access_token_note = "NOTE: New access tokens expire in 1 hour.";
+$manage_token_note = "You can manage your refresh tokens in the following link: ";
+$manageTokens = $issuer . "manage/user/services";
+$sessionName = "simple-oidc-client-php";
+$sessionLifetime = 60*60;  // must be equal to access token validation time in seconds
+```
+
+## User attributes
+
+This section defines the attributes that can be made available to services
+connected to RCIAM.
+
+### 1. RCIAM ID
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+|          attribute name | RCIAM ID                                                                            |
+| ----------------------: | :---------------------------------------------------------------------------------- |
+|         **description** | An identifier for the user, unique among all RCIAM accounts and never reused        |
+|   **SAML Attribute(s)** | `1.3.6.1.4.1.5923.1.1.1.13` (eduPersonUniqueId)                                     |
+|          **OIDC scope** | `openid`                                                                            |
+|       **OIDC claim(s)** | `sub`                                                                               |
+| **OIDC claim location** | <ul><li>ID token</li><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul> |
+|              **origin** | RCIAM assigns this attribute on user registration                                   |
+|             **changes** | No                                                                                  |
+|        **multiplicity** | No                                                                                  |
+|        **availability** | Always                                                                              |
+|             **example** | _ef72285491ffe53c39b75bdcef46689f5d26ddfa00312365cc4fb5ce97e9ca87@example.org_      |
+|               **notes** | Use **RCIAM ID** within your application as the unique-identifier key for the user  |
+|              **status** | Stable                                                                              |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+### 2. Display Name
+
+|          attribute name | Display Name                                      |
+| ----------------------: | :------------------------------------------------ |
+|         **description** | The user's full name, in a displayable form       |
+|   **SAML Attribute(s)** | `urn:oid:2.16.840.1.113730.3.1.241` (displayName) |
+|          **OIDC scope** | `profile`                                         |
+|       **OIDC claim(s)** | `name`                                            |
+| **OIDC claim location** | Userinfo endpoint                                 |
+|              **origin** | Provided by user's Identity Provider              |
+|             **changes** | Yes                                               |
+|        **multiplicity** | Single-valued                                     |
+|        **availability** | Always                                            |
+|             **example** | _John Doe_                                        |
+|               **notes** | -                                                 |
+|              **status** | Stable                                            |
+
+### 3. Given Name
+
+|          attribute name | Given Name                           |
+| ----------------------: | :----------------------------------- |
+|         **description** | The user's first name                |
+|   **SAML Attribute(s)** | `urn:oid:2.5.4.42` (givenName)       |
+|          **OIDC scope** | `profile`                            |
+|       **OIDC claim(s)** | `given_name`                         |
+| **OIDC claim location** | Userinfo endpoint                    |
+|              **origin** | Provided by user's Identity Provider |
+|             **changes** | Yes                                  |
+|        **multiplicity** | Single-valued                        |
+|        **availability** | Always                               |
+|             **example** | _John_                               |
+|               **notes** | -                                    |
+|              **status** | Stable                               |
+
+### 4. Family Name
+
+|          attribute name | Family Name                          |
+| ----------------------: | :----------------------------------- |
+|         **description** | The user's last name                 |
+|   **SAML Attribute(s)** | `urn:oid:2.5.4.4` (sn)               |
+|          **OIDC scope** | `profile`                            |
+|       **OIDC claim(s)** | `family_name`                        |
+| **OIDC claim location** | Userinfo endpoint                    |
+|              **origin** | Provided by user's Identity Provider |
+|             **changes** | Yes                                  |
+|        **multiplicity** | Single-valued                        |
+|        **availability** | Always                               |
+|             **example** | _Doe_                                |
+|               **notes** | -                                    |
+|              **status** | Stable                               |
+
+### 5. Username
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+|          attribute name | Username                                                                            |
+| ----------------------: | :---------------------------------------------------------------------------------- |
+|         **description** | The username by which the user wishes to be referred to                             |
+|   **SAML Attribute(s)** | `urn:oid:0.9.2342.19200300.100.1.1` (uid)                                           |
+|          **OIDC scope** | `profile`                                                                           |
+|       **OIDC claim(s)** | `preferred_username`                                                                |
+| **OIDC claim location** | <ul><li>ID token</li><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul> |
+|              **origin** | RCIAM assigns this attribute on user registration                                   |
+|             **changes** | No                                                                                  |
+|        **multiplicity** | Single-valued                                                                       |
+|        **availability** | Always                                                                              |
+|             **example** | _jdoe_                                                                              |
+|               **notes** | The Service Provider **MUST NOT** rely upon this value being unique                 |
+|              **status** | Stable                                                                              |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+### 6. Email Address
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+|          attribute name | Email Address                                                               |
+| ----------------------: | :-------------------------------------------------------------------------- |
+|         **description** | The user's email address                                                    |
+|   **SAML Attribute(s)** | `urn:oid:0.9.2342.19200300.100.1.3` (mail)                                  |
+|          **OIDC scope** | `email`                                                                     |
+|       **OIDC claim(s)** | `email`                                                                     |
+| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>          |
+|              **origin** | Provided by user's Identity Provider                                        |
+|             **changes** | Yes                                                                         |
+|        **multiplicity** | Single-valued                                                               |
+|        **availability** | Always                                                                      |
+|             **example** | _john.doe@example.org_                                                      |
+|               **notes** | This **MAY NOT** be unique and is **NOT** suitable for use as a primary key |
+|              **status** | Stable                                                                      |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+### 7. Verified email flag
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+|          attribute name | Verified email flag                                                 |
+| ----------------------: | :------------------------------------------------------------------ |
+|         **description** | True if the user's email address has been verified; otherwise false |
+|   **SAML Attribute(s)** | See [Verified email list](#8-verified-email-list)                   |
+|          **OIDC scope** | `email`                                                             |
+|       **OIDC claim(s)** | `email_verified`                                                    |
+| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>  |
+|              **origin** | RCIAM assigns this attribute on user registration                   |
+|             **changes** | Yes                                                                 |
+|        **multiplicity** | Single-valued                                                       |
+|        **availability** | Always                                                              |
+|             **example** | _true_                                                              |
+|               **notes** | This claim is available only in OpenID Connect                      |
+|              **status** | Stable                                                              |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+### 8. Verified email list
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+|          attribute name | Verified email list                                                 |
+| ----------------------: | :------------------------------------------------------------------ |
+|         **description** | A list of user's email addresses that have been verified            |
+|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.25178.4.1.14` (voPersonVerifiedEmail)          |
+|          **OIDC scope** | `email`                                                             |
+|       **OIDC claim(s)** | `voperson_verified_email`                                           |
+| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>  |
+|              **origin** | RCIAM or the user's Identity Provider                               |
+|             **changes** | Yes                                                                 |
+|        **multiplicity** | Multi-valued                                                        |
+|        **availability** | Not always                                                          |
+|             **example** | <ul><li>_john.doe@example.org_</li><li>_jdoe@example.com_</li></ul> |
+|               **notes** | -                                                                   |
+|              **status** | Experimental                                                        |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+### 9. Affiliation
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+|          attribute name | Affiliation                                                              |
+| ----------------------: | :----------------------------------------------------------------------- |
+|         **description** | The user's affiliation within a particular security domain (scope)       |
+|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.5923.1.1.1.9` (eduPersonScopedAffiliation)          |
+|          **OIDC scope** | `eduperson_scoped_affiliation`                                           |
+|       **OIDC claim(s)** | `eduperson_scoped_affiliation`                                           |
+| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>       |
+|              **origin** | RCIAM assigns this attribute on user registration                        |
+|             **changes** | Yes                                                                      |
+|        **multiplicity** | Multi-valued                                                             |
+|        **availability** | Always                                                                   |
+|             **example** | _member@example.org_                                                     |
+|               **notes** | Service Providers are encouraged to validate the scope of this attribute |
+|              **status** | Stable                                                                   |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+### 10. Groups
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+|          attribute name | Groups                                                                         |
+| ----------------------: | :----------------------------------------------------------------------------- |
+|         **description** | The user's group/VO membership/role information expressed as entitlements      |
+|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.5923.1.1.1.7` (eduPersonEntitlement)                      |
+|          **OIDC scope** | `eduperson_entitlement`                                                        |
+|       **OIDC claim(s)** | `eduperson_entitlement`                                                        |
+| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>             |
+|              **origin** | Group memberships are managed by group administrators                          |
+|             **changes** | Yes                                                                            |
+|        **multiplicity** | Multi-valued                                                                   |
+|        **availability** | Not always                                                                     |
+|             **example** | _urn:mace:example.org:group:vo.example.org:role=vm_operator#rciam.example.org_ |
+|               **notes** | -                                                                              |
+|              **status** | Stable                                                                         |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+### 11. Capabilities
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+|          attribute name | Capabilities                                                                                                                                                                                                                              |
+| ----------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|         **description** | This attribute describes the resource or child-resource a user is allowed to access, optionally specifying certain actions the user is entitled to perform, as described in [AARC-G027](https://aarc-community.org/guidelines/aarc-g027/) |
+|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.5923.1.1.1.7` (eduPersonEntitlement)                                                                                                                                                                                 |
+|          **OIDC scope** | `eduperson_entitlement`                                                                                                                                                                                                                   |
+|       **OIDC claim(s)** | `eduperson_entitlement`                                                                                                                                                                                                                   |
+| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>                                                                                                                                                                        |
+|              **origin** | Capabilities are managed by RCIAM                                                                                                                                                                                                         |
+|             **changes** | Yes                                                                                                                                                                                                                                       |
+|        **multiplicity** | Multi-valued                                                                                                                                                                                                                              |
+|        **availability** | Not always                                                                                                                                                                                                                                |
+|             **example** | _urn:mace:example.org:res:example-res#rciam.example.org_                                                                                                                                                                                  |
+|               **notes** | -                                                                                                                                                                                                                                         |
+|              **status** | Stable                                                                                                                                                                                                                                    |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+### 12. Assurance
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+|          attribute name | Assurance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ----------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- |
+|         **description** | Assurance of the identity of the user, following [REFEDS Assurance Framework (RAF)](https://refeds.org/assurance) and the [RCIAM AAI Assurance Profiles](#level-of-assurance). The following RAF values are qualified and automatically set for all Community identities:<ul><li>$PREFIX$</li><li>$PREFIX$/ID/unique</li><li>$PREFIX$/ID/eppn-unique-no-reassign</li><li>$PREFIX$/IAP/low</li><li>$PREFIX$/ATP/ePA-1m</li><li>$PREFIX$/ATP/ePA-1d</li></ul>Following RAF values are set if the currently used authentication provider asserts (or otherwise qualifies to) them:<ul><li>$PREFIX$/IAP/medium</li><li>$PREFIX$/IAP/high</li></ul>The following compound profiles are asserted if the user qualifies to them<ul><li>$PREFIX$/profile/cappuccino</li><li>$PREFIX$/profile/espresso</li></ul> |
+|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.5923.1.1.1.11` (eduPersonAssurance)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|          **OIDC scope** | `eduperson_assurance`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|       **OIDC claim(s)** | `eduperson_assurance`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|              **origin** | RCIAM assigns this attribute on user registration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|             **changes** | Yes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|        **multiplicity** | Multi-valued                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|        **availability** | Not always                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|             **example** | _[```https://rciam.example.org/LoA#Low```, ```https://refeds.org/assurance/IAP/low```]_                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|               **notes** | -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|              **status** | Stable                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |     |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+### 13. SSH Public Key
+
+<!-- markdownlint-disable line-length no-inline-html -->
+
+|          attribute name | SSH Public Key                                                    |
+| ----------------------: | :---------------------------------------------------------------- |
+|         **description** | Provides information about the user's SSH public key(s)           |
+|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.24552.500.1.1.1.13` (sshPublicKey)           |
+|          **OIDC scope** | `ssh_public_key`                                                  |
+|       **OIDC claim(s)** | `ssh_public_key`                                                  |
+| **OIDC claim location** | Userinfo endpoint                                                 |
+|              **origin** | Added SSH public key(s) in user's RCIAM Profile                   |
+|             **changes** | Yes                                                               |
+|        **multiplicity** | Multi-valued                                                      |
+|        **availability** | Not always                                                        |
+|             **example** | `ssh-rsa AAAAB3NzaC...qxxEEipdnZ nikosev@grnet-hq.admin.grnet.gr` |
+|               **notes** | -                                                                 |
+|              **status** | Experimental                                                      |
+
+<!-- markdownlint-enable line-length no-inline-html -->
+
+## User authorisation
+
+The following information about the authenticated user can be provided by
+RCIAM in order to control user access to resources:
+
+1. VO/group membership and role information about the authenticated user
+1. Capabilities
+1. Identity Assurance
+
+### VO/group membership and role information
+
+#### Background
+
+VO/group membership and role information is encoded in entitlements
+(`eduPersonEntitlement` attribute values in SAML or `eduperson_entitlement`
+claim in OIDC). These entitlements are typically used to indicate access rights
+to protected resources. Entitlements are multi-valued, with each value formatted
+as a URN.
+
+#### Syntax
+
+An entitlement value expressing group membership and role information has the
+following syntax (components enclosed in square brackets are OPTIONAL):
+
+```text
+urn:mace:example.org:group:<GROUP>[:<SUBGROUP>*][:role=<ROLE>]#<GROUP-AUTHORITY>
+```
+
+where:
+
+- `<GROUP>` is the name of a VO, research collaboration or a top level arbitrary
+  group. `<GROUP>` names are unique within the `urn:mace:example.org:group`
+  namespace;
+- zero or more `<SUBGROUP>` components represent the hierarchy of subgroups in
+  the `<GROUP>`; specifying sub-groups is optional
+- the optional `<ROLE>` component is scoped to the rightmost (sub)group; if no
+  group information is specified, the role applies to the VO
+- `<GROUP-AUTHORITY>` is a non-empty string that indicates the authoritative
+  source for the entitlement value. For example, it can be the FQDN of the group
+  management system that is responsible for the identified group membership
+  information
+
+**Example:**
+
+```text
+urn:mace:example.org:group:vo.example.org:role=vm_operator#rciam.example.org
+```
+
+### Capabilities
+
+#### Background
+
+The user's capability information is encoded in entitlements
+(`eduPersonEntitlement` attribute values in SAML or `eduperson_entitlement`
+claim in OIDC). These entitlements are typically used to indicate access rights
+to protected resources. Entitlements are multi-valued, with each value formatted
+as a URN following the syntax defined in
+[AARC-G027](https://aarc-community.org/guidelines/aarc-g027/).
+
+#### Syntax
+
+An entitlement value expressing a capability has the following syntax
+(components enclosed in square brackets are OPTIONAL):
+
+```text
+<NAMESPACE>:res:<RESOURCE>[:<CHILD-RESOURCE>]...[:act:<ACTION>[,<ACTION>]...]#<AUTHORITY>
+```
+
+where:
+
+- `<NAMESPACE>` is controlled by the e-infrastructure, research infrastructure
+  or research collaboration that manages the capability. The `<NAMESPACE>` of
+  capabilities managed by RCIAM is set to `urn:mace:example.org`, while,
+  generally, it is in the form of
+  `urn:<NID>:<DELEGATED-NAMESPACE>[:<SUBNAMESPACE>]...` where:
+
+  - `<NID>` is the namespace identifier associated with a URN namespace
+    registered with IANA2, ensuring global uniqueness. Implementers SHOULD use
+    one of the existing registered URN namespaces, such as
+    `urn:mace`[[MACE](https://incommon.org/community/mace-registries/mace-urn-registry/)].
+
+  - `<DELEGATED-NAMESPACE>` is a URN sub-namespace delegated from one of the
+    IANA registered NIDs to an organisation representing the e-infrastructure,
+    research infrastructure or research collaboration. It is RECOMMENDED that a
+    publicly accessible URN value registry for each delegated namespace be
+    provided.
+
+- The literal string `"res"` indicates that this is a resource-specific
+  entitlement as opposed to, for example, an entitlement used for expressing
+  group membership
+  [AARC-G002](https://aarc-community.org/guidelines/aarc-g002/).
+
+- `<RESOURCE>` is the name of the resource. Whether the name should be unique is
+  an implementation decision.
+
+- An optional list of colon-separated `<CHILD-RESOURCE>` components represents a
+  specific branch of the hierarchy of resources under the identified
+  `<RESOURCE>`.
+
+- An optional list of comma-separated `<ACTION>`s MAY be included, which, if
+  present, MUST be prefixed with the literal string “act”. This component MAY be
+  used for further specifying the actions a user is entitled to do at a given
+  resource. Note that the list of `<ACTION>`s is scoped to the rightmost
+  child-resource; if no child-resource information is specified, actions apply
+  to the top level resource. The interpretation of a capability without actions
+  specified is an implementation detail.
+
+- `<AUTHORITY>` is a mandatory and non-empty string that indicates the
+  authoritative source of the capability. This SHOULD be used to further specify
+  the exact issuing instance. For example, it MAY be the FQDN of the service
+  that issued that specific capability. The `<AUTHORITY>` is specified in the
+  f-component [RFC8141](https://tools.ietf.org/html/rfc8141) of the URN; thus,
+  it is introduced by the number sign ("#") character and terminated by the end
+  of the URN. All characters must be encoded according to
+  [RFC8141](https://tools.ietf.org/html/rfc8141). Hence, the `<AUTHORITY>` MUST
+  NOT be considered when determining equivalence (Section 3 in
+  [RFC8141](https://tools.ietf.org/html/rfc8141)) of URN-formatted capabilities.
+  The `<AUTHORITY>` of capabilities managed by RCIAM is typically set to
+  `rciam.example.org`.
+
+**Example:**
+
+```text
+urn:mace:example.org:res:example-res#rciam.example.org
+```
+
+### Identity Assurance
+
+Based on the authentication method selected by the user, the RCIAM proxy assigns a
+Identity Assurance, which is conveyed to the SP through both the
+`eduPersonAssurance` attribute and the Authentication Context Class
+(`AuthnContextClassRef`) of the SAML authentication response. RCIAM uses
+Assurance Profiles which distinguish between three Identity Assurance levels,
+similarly to the
+[eID Assurance Framework (eIDAF)](http://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:JOL_2015_235_R_0002).
+Each level is represented by a URI as follows:
+
+- **Low**: Authentication through a social identity provider or other low
+  identity assurance provider: `https://rciam.example.org/LoA#Low`
+- **Substantial**: Password/X.509 authentication at the user\'s home IdP:
+  `https://rciam.example.org/LoA#Substantial`
+- **High**: Substantial + multi-factor authn (not yet supported, TBD):
+  `https://rciam.example.org/LoA#High`
+
+Moreover, RCIAM follows the
+[REFEDS Assurance framework (RAF)](https://wiki.refeds.org/display/ASS/REFEDS+Assurance+Framework+ver+1.0).
+The RCIAM conveys any RAF values provided by the IdP directly to the SP,
+through the aforementioned methods. Furthermore, RCIAM will append into the
+User's profile any additional LoA, if the user is eligible for it. For example,
+a user having a Verified Email is eligible for the RAF value
+`https://refeds.org/assurance/IAP/low`
+
+Some RCIAM SPs have been configured to provide limited access (or not to accept at
+all) credentials with the Low LoA.
