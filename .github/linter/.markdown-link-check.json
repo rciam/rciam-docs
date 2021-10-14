@@ -1,0 +1,13 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^http://localhost"
+    },
+    {
+      "pattern": "^https://rciam-demo.example.org"
+    },
+    {
+      "pattern": "^https://rciam.example.org"
+    }
+  ]
+}
