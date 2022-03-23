@@ -61,24 +61,24 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             position: 'left',
             label: 'Developer',
           },
-          {
-            type: 'doc',
-            docId: 'glossary',
-            position: 'left',
-            label: 'Glossary',
-          },
-          {
-            type: 'doc',
-            docId: 'features',
-            position: 'left',
-            label: 'Features',
-          },
-          {
-            type: 'doc',
-            docId: 'use-cases',
-            position: 'left',
-            label: 'Use Cases',
-          },
+          // {
+          //   type: 'doc',
+          //   docId: 'glossary',
+          //   position: 'left',
+          //   label: 'Glossary',
+          // },
+          // {
+          //   type: 'doc',
+          //   docId: 'features',
+          //   position: 'left',
+          //   label: 'Features',
+          // },
+          // {
+          //   type: 'doc',
+          //   docId: 'use-cases',
+          //   position: 'left',
+          //   label: 'Use Cases',
+          // },
           {
             type: 'doc',
             docId: 'roadmap',
