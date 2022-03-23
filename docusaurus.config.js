@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   title: 'OpenAIRE Login Docs',
   tagline: 'Secure Access Made Easy',
   url: 'https://openaire.github.io',
-  baseUrl: '/loign-docs/',
+  baseUrl: '/login-docs/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/openaire-favicon.ico',
