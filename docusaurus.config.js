@@ -4,15 +4,15 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
-  title: 'RCIAM Docs',
-  tagline: 'RCIAM Documentation',
-  url: 'https://rciam.github.io',
-  baseUrl: '/rciam-docs/',
+  title: 'OpenAIRE Login Docs',
+  tagline: 'Secure Access Made Easy',
+  url: 'https://openaire.github.io',
+  baseUrl: '/loign-docs/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/rciam-favicon.svg',
-  organizationName: 'rciam',
-  projectName: 'rciam-docs',
+  favicon: 'img/openaire-favicon.ico',
+  organizationName: 'openaire',
+  projectName: 'login-docs',
 
   presets: [
     [
@@ -39,8 +39,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
       navbar: {
         title: 'Docs',
         logo: {
-          alt: 'RCIAM Logo',
-          src: 'img/rciam-logo.svg',
+          alt: 'OpenAIRE Logo',
+          src: 'img/openaire-login-logo.png',
         },
         items: [
           {
