@@ -4,6 +4,6 @@ sidebar_position: 8
 
 # Roadmap
 
-## Work in Progress
+## Trello Board
 
-This page is under construction.
+The OpenAIRE Login roadmap is available in the [OpenAIRE Login Trello Board](https://trello.com/b/ar92Ndca/openaire-login).
