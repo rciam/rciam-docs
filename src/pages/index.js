@@ -9,13 +9,13 @@ function HomepageGreeting() {
   return (
     <div className={clsx('col col--12')}>
       <div className="text--center">
-        <img className={clsx('logo-full')} src="img/rciam-logo-full.svg" alt="RCIAM Logo (Full)"/>
+        <img className={clsx('logo-full')} src="img/openaire-login-logo.jpg" alt="OpenAIRE Login Logo (Full)"/>
       </div>
       <div className="text--center padding-horiz--md">
         <p>
-          RCIAM is an identity and access management solution that supports
-          multiple identity protocols and frameworks, such as SAML 2.0, OpenID
-          Connect, and OAuth 2.0.
+        OpenAIRE Login is an authentication and authorisation platform that enables
+        researchers to securely access and share common resources and services
+        using their existing academic or social identities.
         </p>
       </div>
       <div className={styles.buttons}>
@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="RCIAM Documentation"
+      description="OpenAIRE Login Documentation"
     >
       <main>
         <HomepageGreeting />
