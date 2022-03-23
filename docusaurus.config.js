@@ -40,7 +40,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         title: 'Docs',
         logo: {
           alt: 'OpenAIRE Logo',
-          src: 'img/openaire-login-logo.png',
+          src: 'img/openaire-favicon.ico',
         },
         items: [
           {
