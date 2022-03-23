@@ -12,8 +12,6 @@ Organisation (VO).
 In simple terms a Virtual Organisation (VO) is just a group of users. In
 RCIAM VOs are created to group researchers who aim to share resources across the
 services to achieve a common goal as part of a scientific collaboration.
-For a more formal definition of VO please look at the
-[RCIAM Glossary](../glossary.md).
 
 If you are interested in creating your own VO, please see instructions in the
 section [below](#vo-management).
