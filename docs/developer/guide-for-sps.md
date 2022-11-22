@@ -45,7 +45,7 @@ more information can be found in the protocol-specific sections that follow.
 
 ## General Information
 
-OpenAIRE Login supports two authentication and authorisation protocols that you
+OpenAIRE AAI supports two authentication and authorisation protocols that you
 can choose from:
 
 1. [Security Assertion Markup Language (SAML) 2.0](http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html)
@@ -53,7 +53,7 @@ can choose from:
    extension to [OAuth 2.0](https://tools.ietf.org/html/rfc6749)
 
 Regardless of which of the two protocols you are going to use, you need to
-provide the following information to connect your service to OpenAIRE Login:
+provide the following information to connect your service to OpenAIRE AAI:
 
 1. Name of the service (in English and optionally in other languages supported
    by the service)
@@ -83,18 +83,18 @@ provide the following information to connect your service to OpenAIRE Login:
 ## SAML Service Provider
 
 To enable federated access to a web-based application, you can connect to the
-OpenAIRE Login IdP as a SAML Service Provider (SP). Users of the application
-will be redirected to OpenAIRE Login in order to log in, and OpenAIRE Login can
+OpenAIRE AAI IdP as a SAML Service Provider (SP). Users of the application will
+be redirected to OpenAIRE AAI in order to log in, and OpenAIRE AAI can
 authenticate them using any of the supported backend authentication mechanisms,
 such as institutional IdPs registered with eduGAIN or Social Providers. Once the
-user is authenticated, OpenAIRE Login will return a SAML assertion to the
+user is authenticated, OpenAIRE AAI will return a SAML assertion to the
 application containing information about the authenticated user.
 
 ### Metadata registration
 
 SAML authentication relies on the use of metadata. Both parties (you as a SP and
-the OpenAIRE Login IdP) need to exchange metadata in order to know and trust
-each other. The metadata include information such as the location of the service
+the OpenAIRE AAI IdP) need to exchange metadata in order to know and trust each
+other. The metadata include information such as the location of the service
 endpoints that need to be invoked, as well as the certificates that will be used
 to sign SAML messages. The format of the exchanged metadata should be based on
 the XML-based
@@ -105,7 +105,7 @@ Shibboleth, SimpleSAMLphp, and `mod_auth_mellon`). It is important that you
 serve your metadata over HTTPS using a browser-friendly SSL certificate, i.e.
 issued by a trusted certificate authority.
 
-You can get the metadata of the OpenAIRE Login IdP Proxy on a dedicated URL that
+You can get the metadata of the OpenAIRE AAI IdP Proxy on a dedicated URL that
 depends on the integration environment being used:
 
 <!-- markdownlint-disable line-length -->
@@ -160,7 +160,7 @@ If the SP supports the Single Logout profile, then its metadata MUST contain
 
 ### Attributes
 
-The OpenAIRE Login IdP is guaranteed to release a minimal subset of the
+The OpenAIRE AAI IdP is guaranteed to release a minimal subset of the
 [REFEDS R&S](https://refeds.org/category/research-and-scholarship) attribute
 bundle to connected Service Providers without administrative involvement,
 subject to user consent. The following attributes constitute a minimal subset of
@@ -176,9 +176,9 @@ Service Providers is included in the [User Attribute](#user-attributes) section.
 
 ### Attribute-based authorisation
 
-OpenAIRE Login provides information about the authenticated user that may be
-used by Service Providers in order to control user access to resources. This
-information is provided by the OpenAIRE Login IdP in the
+OpenAIRE AAI provides information about the authenticated user that may be used
+by Service Providers in order to control user access to resources. This
+information is provided by the OpenAIRE AAI IdP in the
 [SAML attribute assertion](#attributes). The table below lists the SAML
 attributes that are relevant for user authorisation:
 
@@ -198,22 +198,22 @@ attributes that are relevant for user authorisation:
 
 ## OpenID Connect Service Provider
 
-Service Providers can be integrated with OpenAIRE Login using OpenID Connect
+Service Providers can be integrated with OpenAIRE AAI using OpenID Connect
 (OIDC) as an alternative to the SAML2 protocol. To allow this, the OpenAIRE
 Login IdP provides an OpenID Connect (OAuth2) API based on
 [MITREid Connect](https://github.com/mitreid-connect/OpenID-Connect-Java-Spring-Server),
 which has been
 [certified by the OpenID Foundation](http://openid.net/certification/).
-Interconnection with the OpenAIRE Login OpenID Provider allows users to sign in
+Interconnection with the OpenAIRE AAI OpenID Provider allows users to sign in
 using any of the supported backend authentication mechanisms, such as
 institutional IdPs registered with eduGAIN or Social Providers. Once the user
-has signed in, OpenAIRE Login can return OIDC Claims containing information
-about the authenticated user.
+has signed in, OpenAIRE AAI can return OIDC Claims containing information about
+the authenticated user.
 
 ### Client registration
 
-Before your service can use the OpenAIRE Login OpenID Provider for user login,
-you must register a client and obtain OAuth 2.0 client credentials by contacting
+Before your service can use the OpenAIRE AAI OpenID Provider for user login, you
+must register a client and obtain OAuth 2.0 client credentials by contacting
 `aai` `<AT>` `openaire.eu`. OAuth2 credentials typically include a client ID and
 client secret. You also need to specify:
 
@@ -232,16 +232,16 @@ contacts.
 
 ### Claims
 
-The OpenAIRE Login UserInfo Endpoint is an OAuth 2.0 Protected Resource that
+The OpenAIRE AAI UserInfo Endpoint is an OAuth 2.0 Protected Resource that
 returns specific information about the authenticated End-User as Claim Values.
 To obtain the requested Claims about the End-User, the Client makes a request to
 the UserInfo Endpoint using an Access Token obtained through OpenID Connect
 Authentication. The scopes associated with the Access Token used to access the
-OpenAIRE Login UserInfo Endpoint will determine what Claims will be released.
+OpenAIRE AAI UserInfo Endpoint will determine what Claims will be released.
 These Claims are represented by a JSON object that contains a collection of name
 and value pairs for the Claims.
 
-The following scope values can be used to request Claims from the OpenAIRE Login
+The following scope values can be used to request Claims from the OpenAIRE AAI
 UserInfo Endpoint:
 
 <!-- markdownlint-disable line-length no-inline-html -->
@@ -261,7 +261,7 @@ Service Providers is included in the [User Attribute](#user-attributes) section.
 
 ### Grant Types
 
-OpenAIRE Login supports the following OpenID Connect/OAuth2 grant types:
+OpenAIRE AAI supports the following OpenID Connect/OAuth2 grant types:
 
 - Authorization Code: used by Web Apps executing on a server.
 - Token Exchange: used by clients to request and obtain security tokens in
@@ -686,9 +686,9 @@ You can find the _Token Endpoint_ in the [Endpoints](#endpoints) table.
 
 ### Claims-based authorisation
 
-OpenAIRE Login provides information about the authenticated user that may be
-used by Service Providers in order to control user access to resources. This
-information is provided by the OpenAIRE Login OpenID Provider in the form of
+OpenAIRE AAI provides information about the authenticated user that may be used
+by Service Providers in order to control user access to resources. This
+information is provided by the OpenAIRE AAI OpenID Provider in the form of
 [OIDC claims](#claims). The table below lists the claims that are relevant for
 user authorisation:
 
@@ -715,14 +715,14 @@ Move to the apache document root and download and extract
 
 #### Configure Client
 
-To register the Client in the BETA instance of OpenAIRE Login you need to send
-as an email as described in [Client registration](#client-registration) section
-and include a `Redirect URI` (e.g.
+To register the Client in the BETA instance of OpenAIRE AAI you need to send as
+an email as described in [Client registration](#client-registration) section and
+include a `Redirect URI` (e.g.
 `http://localhost/simple-oidc-client-php/refreshtoken.php`), the needed Grant
 Type and Scopes. The Redirect URI must link to `refreshtoken.php` which is
 located in simple-oidc-client-php directory.
 
-A member of the OpenAIRE Login Support team will take care of your request and
+A member of the OpenAIRE AAI Support team will take care of your request and
 they will send you the `Client ID` and `Client Secret`.
 
 #### Configure simple-oidc-client-php
@@ -805,26 +805,26 @@ $sessionLifetime = 60*60;  // must be equal to access token validation time in s
 ## User attributes
 
 This section defines the attributes that can be made available to services
-connected to OpenAIRE Login.
+connected to OpenAIRE AAI.
 
 ### 1. OpenAIRE ID
 
 <!-- markdownlint-disable line-length no-inline-html -->
 
-|          attribute name | OpenAIRE ID                                                                                 |
-| ----------------------: | :------------------------------------------------------------------------------------------ |
-|         **description** | An identifier for the user, unique among all OpenAIRE Login accounts and never reused       |
-|   **SAML Attribute(s)** | `1.3.6.1.4.1.5923.1.1.1.13` (eduPersonUniqueId)                                             |
-|          **OIDC scope** | `openid`                                                                                    |
-|       **OIDC claim(s)** | `sub`                                                                                       |
-| **OIDC claim location** | <ul><li>ID token</li><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>         |
-|              **origin** | OpenAIRE Login assigns this attribute on user registration                                  |
-|             **changes** | No                                                                                          |
-|        **multiplicity** | No                                                                                          |
-|        **availability** | Always                                                                                      |
-|             **example** | _ef72285491ffe53c39b75bdcef46689f5d26ddfa00312365cc4fb5ce97e9ca87@aai.openaire.eu_          |
-|               **notes** | Use **OpenAIRE Login ID** within your application as the unique-identifier key for the user |
-|              **status** | Stable                                                                                      |
+|          attribute name | OpenAIRE ID                                                                               |
+| ----------------------: | :---------------------------------------------------------------------------------------- |
+|         **description** | An identifier for the user, unique among all OpenAIRE AAI accounts and never reused       |
+|   **SAML Attribute(s)** | `1.3.6.1.4.1.5923.1.1.1.13` (eduPersonUniqueId)                                           |
+|          **OIDC scope** | `openid`                                                                                  |
+|       **OIDC claim(s)** | `sub`                                                                                     |
+| **OIDC claim location** | <ul><li>ID token</li><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>       |
+|              **origin** | OpenAIRE AAI assigns this attribute on user registration                                  |
+|             **changes** | No                                                                                        |
+|        **multiplicity** | No                                                                                        |
+|        **availability** | Always                                                                                    |
+|             **example** | _ef72285491ffe53c39b75bdcef46689f5d26ddfa00312365cc4fb5ce97e9ca87@aai.openaire.eu_        |
+|               **notes** | Use **OpenAIRE AAI ID** within your application as the unique-identifier key for the user |
+|              **status** | Stable                                                                                    |
 
 <!-- markdownlint-enable line-length no-inline-html -->
 
@@ -911,7 +911,7 @@ connected to OpenAIRE Login.
 |          **OIDC scope** | `email`                                                             |
 |       **OIDC claim(s)** | `email_verified`                                                    |
 | **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>  |
-|              **origin** | OpenAIRE Login assigns this attribute on user registration          |
+|              **origin** | OpenAIRE AAI assigns this attribute on user registration            |
 |             **changes** | Yes                                                                 |
 |        **multiplicity** | Single-valued                                                       |
 |        **availability** | Always                                                              |
@@ -932,7 +932,7 @@ connected to OpenAIRE Login.
 |          **OIDC scope** | -                                                                        |
 |       **OIDC claim(s)** | -                                                                        |
 | **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>       |
-|              **origin** | OpenAIRE Login assigns this attribute on user registration               |
+|              **origin** | OpenAIRE AAI assigns this attribute on user registration                 |
 |             **changes** | Yes                                                                      |
 |        **multiplicity** | Multi-valued                                                             |
 |        **availability** | Always                                                                   |
@@ -966,7 +966,7 @@ connected to OpenAIRE Login.
 ## User authorisation
 
 The following information about the authenticated user can be provided by
-OpenAIRE Login in order to control user access to resources:
+OpenAIRE AAI in order to control user access to resources:
 
 1. VO/group membership and role information about the authenticated user
 
