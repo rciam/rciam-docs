@@ -4,26 +4,32 @@ sidebar_position: 1
 
 # Service Providers
 
-This page contains information about connecting services to OpenAIRE Login in
-order to allow user login through OpenAIRE Login and to receive users'
-attributes. OpenAIRE Login is connected to a wide range of academic and social
-Identity Providers that users can choose from in order to access your service.
+This page contains information about using the OpenAIRE AAI for securing access
+to your service. The OpenAIRE AAI supports both OpenID Connect (an extension to
+OAuth 2.0) and SAML 2.0. So the first thing you need to decide is which of the
+two you are going to use. If you want you can also choose to secure some with
+OpenID Connect and others with SAML. To secure your services you are also going
+to need a library for the protocol you’ve selected. Once your service is
+connected to the OpenAIRE AAI, users will be able to choose from a wide range of
+academic and social Identity Providers in order to access your service.
 
 ## Service Provider integration workflow
 
-To integrate your Service Provider with the OpenAIRE Login service, you need to
-send us an email to `aai` `<AT>` `openaire.eu` indicating your request.
+To integrate your Service Provider with the OpenAIRE AAI, you need to send us an
+email to `aai` `<AT>` `openaire.eu` indicating your request.
 
 The integration follows a two-step process:
 
 1. Register your Service Provider and test integration with the **BETA**
-   instance of OpenAIRE Login. The BETA instance allows for testing
-   authentication and authorisation without affecting the production OpenAIRE
-   Login service. Note that while the BETA instance has identical functionality
-   to the production instance, no information is shared between the two systems.
-1. Register your Service Provider with the **production** instance of OpenAIRE
-   Login to allow members of the OpenAIRE User Community to access your service.
-   This requires that the integration has been thoroughly tested during Step 1.
+   instance of the OpenAIRE AAI. The BETA instance allows for testing
+   authentication and authorisation through the available academic and social
+   Identity Providers but shares no information (e.g. users, groups or roles)
+   with the production instance of the OpenAIRE AAI.
+1. Register your Service Provider with the **production** instance of the
+   OpenAIRE AAI. The production instance enables access to your service through
+   any of the available academic and social Identity Providers. Moving to
+   production requires that your service integration has been thoroughly tested
+   during Step 1.
 
 The most important URLs for each environment are listed in the table below but
 more information can be found in the protocol-specific sections that follow.
