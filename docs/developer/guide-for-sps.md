@@ -4,55 +4,48 @@ sidebar_position: 1
 
 # Service Providers
 
-This page contains information about connecting services to
-RCIAM in order to allow user
-login through RCIAM and to receive users' attributes. RCIAM is connected
-to a wide range of academic and social Identity Providers that users can choose
-from in order to access your service.
+This page contains information about using the OpenAIRE AAI for securing access
+to your service. The OpenAIRE AAI supports both OpenID Connect (an extension to
+OAuth 2.0) and SAML 2.0. So the first thing you need to decide is which of the
+two you are going to use. If you want you can also choose to secure some with
+OpenID Connect and others with SAML. To secure your services you are also going
+to need a library for the protocol you’ve selected. Once your service is
+connected to the OpenAIRE AAI, users will be able to choose from a wide range of
+academic and social Identity Providers in order to access your service.
 
 ## Service Provider integration workflow
 
-To integrate your Service Provider with the RCIAM service, you need to
-create a registration request using the
-[RCIAM Federation Registry Portal](https://federation-demo.rciam.grnet.gr). You
-can also use the Federation Registry portal to request the reconfiguration or
-deregistration of an existing deployed service. Service registration requests
-typically require approval by an administrator. Please refer to the
-[Federation Registry Documentation](https://federation.rciam.grnet.gr/docs) for
-more information.
+To integrate your Service Provider with the OpenAIRE AAI, you need to send us an
+email to `aai` `<AT>` `openaire.eu` indicating your request.
 
 The integration follows a two-step process:
 
-1. Register your Service Provider and test integration with the **demo**
-   instance of RCIAM by selecting the "Demo" integration environment
-   during registration through the RCIAM Federation Registry Portal. The demo
-   instance allows for testing authentication and authorisation through the
-   academic and social Identity Providers connected to RCIAM without
-   affecting the production RCIAM service. Note that while the demo instance
-   has identical functionality to the production instance, no information is
-   shared between the two systems.
-1. Register your Service Provider with the **production** instance of RCIAM
-   by selecting the "Production" integration environment during
-   registration through the RCIAM Federation Registry Portal. The production
-   instance allows access to your service through the academic and social
-   Identity Providers connected to RCIAM. This requires that your service
-   integration has been thoroughly tested during Step 1.
+1. Register your Service Provider and test integration with the **BETA**
+   instance of the OpenAIRE AAI. The BETA instance allows for testing
+   authentication and authorisation through the available academic and social
+   Identity Providers but shares no information (e.g. users, groups or roles)
+   with the production instance of the OpenAIRE AAI.
+1. Register your Service Provider with the **production** instance of the
+   OpenAIRE AAI. The production instance enables access to your service through
+   any of the available academic and social Identity Providers. Moving to
+   production requires that your service integration has been thoroughly tested
+   during Step 1.
 
 The most important URLs for each environment are listed in the table below but
 more information can be found in the protocol-specific sections that follow.
 
 <!-- markdownlint-disable line-length -->
 
-| Protocol       | Demo environment                                                       | Production environment                                            |
-| -------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| SAML           | <https://rciam-demo.example.org/proxy/saml2/idp/metadata.php>          | <https://rciam.example.org/proxy/saml2/idp/metadata.php>          |
-| OpenID Connect | <https://rciam-demo.example.org/oidc/.well-known/openid-configuration> | <https://rciam.example.org/oidc/.well-known/openid-configuration> |
+| Protocol       | Production environment                                          | BETA environment                                                     |
+| -------------- | --------------------------------------------------------------- | -------------------------------------------------------------------- |
+| SAML           | <https://aai.openaire.eu/proxy/saml2/idp/metadata.php>          | <https://beta.aai.openaire.eu/proxy/saml2/idp/metadata.php>          |
+| OpenID Connect | <https://aai.openaire.eu/oidc/.well-known/openid-configuration> | <https://beta.aai.openaire.eu/oidc/.well-known/openid-configuration> |
 
 <!-- markdownlint-enable line-length -->
 
 ## General Information
 
-RCIAM supports two authentication and authorisation protocols that you
+OpenAIRE AAI supports two authentication and authorisation protocols that you
 can choose from:
 
 1. [Security Assertion Markup Language (SAML) 2.0](http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html)
@@ -60,7 +53,7 @@ can choose from:
    extension to [OAuth 2.0](https://tools.ietf.org/html/rfc6749)
 
 Regardless of which of the two protocols you are going to use, you need to
-provide the following information to connect your service to RCIAM:
+provide the following information to connect your service to OpenAIRE AAI:
 
 1. Name of the service (in English and optionally in other languages supported
    by the service)
@@ -76,6 +69,8 @@ provide the following information to connect your service to RCIAM:
 1. Privacy statement URL: The privacy policy is used to document the data
    collected and processed by the service. You can use the
    [Privacy Policy template](https://docs.google.com/document/d/1ZU7VjH3g7qcfWcz0Z8TTv-vQiVoRA_wOsuMyJaz28Og/edit)
+1. Acceptable Use Policy / Terms of Use URL (see
+   [WISE AUP Baseline template](https://wise-community.org/wise-baseline-aup/))
 1. Logo URL (optional for showing in catalogues); if provided, logos SHOULD:
    - use a transparent background where appropriate to facilitate the usage of
      logos within a user interface
@@ -84,22 +79,21 @@ provide the following information to connect your service to RCIAM:
    - have a size larger than 40000 and smaller than 50000 characters when
      encoded in base64
 1. Country of the service
-1. Compliance with the policies
 
 ## SAML Service Provider
 
 To enable federated access to a web-based application, you can connect to the
-RCIAM IdP as a SAML Service Provider (SP). Users of the application will
-be redirected to RCIAM in order to log in, and RCIAM can authenticate them
-using any of the supported backend authentication mechanisms, such as
-institutional IdPs registered with eduGAIN or Social Providers. Once the user is
-authenticated, RCIAM will return a SAML assertion to the application
-containing information about the authenticated user.
+OpenAIRE AAI IdP as a SAML Service Provider (SP). Users of the application will
+be redirected to OpenAIRE AAI in order to log in, and OpenAIRE AAI can
+authenticate them using any of the supported backend authentication mechanisms,
+such as institutional IdPs registered with eduGAIN or Social Providers. Once the
+user is authenticated, OpenAIRE AAI will return a SAML assertion to the
+application containing information about the authenticated user.
 
 ### Metadata registration
 
 SAML authentication relies on the use of metadata. Both parties (you as a SP and
-the RCIAM IdP) need to exchange metadata in order to know and trust each
+the OpenAIRE AAI IdP) need to exchange metadata in order to know and trust each
 other. The metadata include information such as the location of the service
 endpoints that need to be invoked, as well as the certificates that will be used
 to sign SAML messages. The format of the exchanged metadata should be based on
@@ -111,22 +105,21 @@ Shibboleth, SimpleSAMLphp, and `mod_auth_mellon`). It is important that you
 serve your metadata over HTTPS using a browser-friendly SSL certificate, i.e.
 issued by a trusted certificate authority.
 
-You can get the metadata of the RCIAM IdP Proxy on a dedicated URL that
+You can get the metadata of the OpenAIRE AAI IdP Proxy on a dedicated URL that
 depends on the integration environment being used:
 
 <!-- markdownlint-disable line-length -->
 
-| Demo environment                                              | Production environment                                   |
-| ------------------------------------------------------------- | -------------------------------------------------------- |
-| <https://rciam-demo.example.org/proxy/saml2/idp/metadata.php> | <https://rciam.example.org/proxy/saml2/idp/metadata.php> |
+| Production environment                                 | BETA environment                                            |
+| ------------------------------------------------------ | ----------------------------------------------------------- |
+| <https://aai.openaire.eu/proxy/saml2/idp/metadata.php> | <https://beta.aai.openaire.eu/proxy/saml2/idp/metadata.php> |
 
 <!-- markdownlint-enable line-length -->
 
-To register your SAML SP, you must submit a service registration request at
-[Federation Registry](https://federation-demo.rciam.grnet.gr). Your request should
-include the general information about your service (see
-[General Information](#general-information)) and the SP's metadata and entity
-id.
+To register your SAML SP, you need to send an email to `aai` `<AT>`
+`openaire.eu`. Your message should include the general information about your
+service (see [General Information](#general-information)) and the SP's metadata
+URL and `entityID`.
 
 ### Metadata
 
@@ -136,30 +129,45 @@ the name in other languages which are commonly used in the geographic scope of
 the deployment. The name should be placed in the `<md:ServiceName>` in the
 `<md:AttributeConsumingService>` container.
 
-It is recommended that the `<md:IDPSSODescriptor>` element included in your SP
-metadata contains both an `AuthnRequestsSigned` and an `WantAssertionsSigned`
-attribute set to `true`.
+It is recommended that your SP metadata contains:
 
-Your SP metadata should also contain contact information for support and for a
-technical contact. The `<md:EntityDescriptor>` element should contain both a
-`<md:ContactPerson>` element with a `contactType` of `"support"` and a
-`<md:ContactPerson>` element with a `contactType` of `"technical"`. The
-`<md:ContactPerson>` elements should contain at least one `<md:EmailAddress>`.
-The support address may be used for generic support questions about the service,
-while the technical contact may be contacted regarding technical
-interoperability problems. The technical contact must be responsible for the
-technical operation of the service represented by your SP.
+- an <md:SPSSODescriptor> role element containing
+  - at least one <md:AssertionConsumerService> endpoint element
+  - at least one <md:KeyDescriptor> element whose use attribute is omitted or
+    set to encryption
+  - an <md:Extensions> element at the role level containing
+    - an <mdui:UIInfo> extension element containing the child elements
+      <mdui:DisplayName>, <mdui:Logo>, and <mdui:PrivacyStatementURL>
+    - an <mdattr:EntityAttributes> extension element for signaling Subject
+      Identifier requirements with previously prescribed content
+  - an <md:ContactPerson> element with a contactType of support and/or a
+    <md:ContactPerson> element with a contactType of technical. The
+    <md:ContactPerson> element(s) should contain at least one <md:EmailAddress>.
+    The support address may be used for generic support questions about the
+    service, while the technical contact may be contacted regarding technical
+    interoperability problems. The technical contact must be responsible for the
+    technical operation of the service represented by your SP.
+
+If the SP supports the Single Logout profile, then its metadata MUST contain
+(within its <md:SPSSODescriptor> role element):
+
+- at least one <md:KeyDescriptor> element whose use attribute is omitted or set
+  to signing
+- at least one <md:SingleLogoutService> endpoint element (this MAY be omitted if
+  the SP solely issues <samlp:LogoutRequest> messages containing the
+  <aslo:Asynchronous> extension
+  [[SAML2ASLO](http://docs.oasis-open.org/security/saml/Post2.0/saml-async-slo/v1.0/cs01/saml-async-slo-v1.0-cs01.pdf)])
 
 ### Attributes
 
-The RCIAM IdP is guaranteed to release a minimal subset of the
+The OpenAIRE AAI IdP is guaranteed to release a minimal subset of the
 [REFEDS R&S](https://refeds.org/category/research-and-scholarship) attribute
 bundle to connected Service Providers without administrative involvement,
 subject to user consent. The following attributes constitute a minimal subset of
 the R&S attribute bundle:
 
-- Persistent, non-reassignable, non-targeted, opaque, globally unique RCIAM user
-  ID (`eduPersonUniqueId`); this is always scoped `@example.org`
+- Persistent, non-reassignable, non-targeted, opaque, globally unique OpenAIRE
+  Login user ID (`eduPersonUniqueId`); this is always scoped `@aai.openaire.eu`
 - Email address (`mail`)
 - Display name (`displayName`) OR (`givenName` AND `sn`)
 
@@ -168,9 +176,9 @@ Service Providers is included in the [User Attribute](#user-attributes) section.
 
 ### Attribute-based authorisation
 
-RCIAM provides information about the authenticated user that may be used
+OpenAIRE AAI provides information about the authenticated user that may be used
 by Service Providers in order to control user access to resources. This
-information is provided by the RCIAM IdP in the
+information is provided by the OpenAIRE AAI IdP in the
 [SAML attribute assertion](#attributes). The table below lists the SAML
 attributes that are relevant for user authorisation:
 
@@ -179,8 +187,6 @@ attributes that are relevant for user authorisation:
 | Description                                                                                     | SAML Attribute         |
 | ----------------------------------------------------------------------------------------------- | ---------------------- |
 | [VO/group membership/roles of the authenticated user](#vogroup-membership-and-role-information) | `eduPersonEntitlement` |
-| [Capabilities](#capabilities)                                                                   | `eduPersonEntitlement` |
-| [Identity Assurance](#identity-assurance)                                                       | `eduPersonAssurance`   |
 
 <!-- markdownlint-enable line-length -->
 
@@ -192,90 +198,61 @@ attributes that are relevant for user authorisation:
 
 ## OpenID Connect Service Provider
 
-Service Providers can be integrated with RCIAM using OpenID Connect
-(OIDC) as an alternative to the SAML2 protocol. To allow this, the RCIAM
-IdP provides an OpenID Connect (OAuth2) API based on
+Service Providers can be integrated with OpenAIRE AAI using OpenID Connect
+(OIDC) as an alternative to the SAML2 protocol. To allow this, the OpenAIRE
+Login IdP provides an OpenID Connect (OAuth2) API based on
 [MITREid Connect](https://github.com/mitreid-connect/OpenID-Connect-Java-Spring-Server),
 which has been
 [certified by the OpenID Foundation](http://openid.net/certification/).
-Interconnection with the RCIAM OIDC Provider allows users to sign in
+Interconnection with the OpenAIRE AAI OpenID Provider allows users to sign in
 using any of the supported backend authentication mechanisms, such as
 institutional IdPs registered with eduGAIN or Social Providers. Once the user
-has signed in, RCIAM can return OIDC Claims containing information about
+has signed in, OpenAIRE AAI can return OIDC Claims containing information about
 the authenticated user.
 
 ### Client registration
 
-Before your service can use the RCIAM OIDC Provider for user login, you
-must submit a service registration request using
-[Federation Registry](https://federation-demo.rciam.grnet.gr) in order to
-obtain OAuth 2.0 credentials. The client configuration should include the
-general information about your service, as described in
-[General Information](#general-information) section.
+Before your service can use the OpenAIRE AAI OpenID Provider for user login, you
+must register a client and obtain OAuth 2.0 client credentials by contacting
+`aai` `<AT>` `openaire.eu`. OAuth2 credentials typically include a client ID and
+client secret. You also need to specify:
 
-#### Obtaining OAuth 2.0 credentials
-
-You need OAuth 2.0 credentials, which typically include a client ID and client
-secret, to authenticate users through the RCIAM OIDC Provider.
-
-You can specify the client ID and secret when creating/editing your client or
-let them being automatically generated during registration (_recommended_).
-
-To find the ID and secret of your client, do the following:
-
-1. Select your client from the
-   [Manage Services Page](https://federation-demo.rciam.grnet.gr).
-1. Look for the **Client ID** in the **Protocol** tab.
-1. Select the **Display/edit client secret:** option from the **Protocol** tab.
-
-:::info
-
-You can copy these values using the green copy button next to the desired field.
-
-:::
-
-#### Setting one or more Redirection URIs
-
-The Redirection URI(s) that you set when creating/editing your client determine
-where the RCIAM OIDC Provider sends responses to your authentication
-requests. Note that the Redirection URI MUST use the `https` scheme; the use of
-`http` Redirection URIs is only allowed in the demo environment.
-
-To find the Redirection URI(s) for your client, do the following:
-
-1. Open the [Manage Services](https://federation-demo.rciam.grnet.gr)
-1. Find the redirect URIs for your client listed under the **Protocol** column
-   of the overview table or **Edit** the particular client and look for the
-   **Redirect URI(s)** in the **Protocol** tab.
+- One or more Redirection URI(s) to indicate where the OpenAIRE OIDC Provider
+  sends responses to your authentication requests. Note that the Redirection
+  URI(s) MUST use the https scheme.
+- One or more scopes to indicate the requested Claims about the End-User (see
+  [Claims](#claims) section)
+- The OpenID Connect/OAuth2 grant type (see [Grant Types](#grant-types) section)
 
 #### Setting additional information about the client
 
 It is strongly suggested that you add a short **description** and a **logo** for
-the client. Lastly, you need to set the email addresses of one or more contacts.
+the client. Lastly, you need to set the **email addresses** of one or more
+contacts.
 
 ### Claims
 
-The RCIAM UserInfo Endpoint is an OAuth 2.0 Protected Resource that
+The OpenAIRE AAI UserInfo Endpoint is an OAuth 2.0 Protected Resource that
 returns specific information about the authenticated End-User as Claim Values.
 To obtain the requested Claims about the End-User, the Client makes a request to
 the UserInfo Endpoint using an Access Token obtained through OpenID Connect
 Authentication. The scopes associated with the Access Token used to access the
-RCIAM UserInfo Endpoint will determine what Claims will be released.
+OpenAIRE AAI UserInfo Endpoint will determine what Claims will be released.
 These Claims are represented by a JSON object that contains a collection of name
 and value pairs for the Claims.
 
-The following scope values can be used to request Claims from the RCIAM
+The following scope values can be used to request Claims from the OpenAIRE AAI
 UserInfo Endpoint:
 
 <!-- markdownlint-disable line-length no-inline-html -->
 
-| Scope                          | Claims                                                                                           |
-| ------------------------------ | ------------------------------------------------------------------------------------------------ |
-| `openid`                       | `sub`                                                                                            |
-| `profile`                      | <ul><li>`name`</li><li>`given_name`</li><li>`family_name`</li><li>`preferred_username`</li></ul> |
-| `email`                        | <ul><li>`email`</li><li>`email_verified`</li><li>`voperson_verified_email`</li></ul>             |
-| `eduperson_scoped_affiliation` | `eduperson_scoped_affiliation`                                                                   |
-| `eduperson_entitlement`        | `eduperson_entitlement`                                                                          |
+| Scope                   | Claims                                                              |
+| ----------------------- | ------------------------------------------------------------------- |
+| `openid`                | `sub`                                                               |
+| `profile`               | <ul><li>`name`</li><li>`given_name`</li><li>`family_name`</li></ul> |
+| `email`                 | <ul><li>`email`</li><li>`email_verified`</li></ul>                  |
+| `eduperson_entitlement` | `eduperson_entitlement`                                             |
+| `orcid`                 | `orcid`                                                             |
 
 <!-- markdownlint-enable line-length no-inline-html -->
 
@@ -284,7 +261,7 @@ Service Providers is included in the [User Attribute](#user-attributes) section.
 
 ### Grant Types
 
-RCIAM supports the following OpenID Connect/OAuth2 grant types:
+OpenAIRE AAI supports the following OpenID Connect/OAuth2 grant types:
 
 - Authorization Code: used by Web Apps executing on a server.
 - Token Exchange: used by clients to request and obtain security tokens in
@@ -298,16 +275,16 @@ The most important OIDC/OAuth2 endpoints are listed below:
 
 <!-- markdownlint-disable line-length -->
 
-| Endpoint               | Demo environment                                                       | Production environment                                            |
-| ---------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Provider configuration | <https://rciam-demo.example.org/oidc/.well-known/openid-configuration> | <https://rciam.example.org/oidc/.well-known/openid-configuration> |
-| Client registration    | <https://federation-demo.rciam.grnet.gr>                               | <https://federation-demo.rciam.grnet.gr>                          |
-| Authorisation          | <https://rciam-demo.example.org/oidc/authorize>                        | <https://rciam.example.org/oidc/authorize>                        |
-| Token                  | <https://rciam-demo.example.org/oidc/token>                            | <https://rciam.example.org/oidc/token>                            |
-| Device Code            | <https://rciam-demo.example.org/oidc/devicecode>                       | <https://rciam.example.org/oidc/devicecode>                       |
-| JSON Web Key(jwt)      | <https://rciam-demo.example.org/oidc/jwk>                              | <https://rciam.example.org/oidc/jwk>                              |
-| User Info              | <https://rciam-demo.example.org/oidc/userinfo>                         | <https://rciam.example.org/oidc/userinfo>                         |
-| Introspection          | <https://rciam-demo.example.org/oidc/introspect>                       | <https://rciam.example.org/oidc/introspect>                       |
+| Endpoint               | Production environment                                          | BETA environment                                                     |
+| ---------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Provider configuration | <https://aai.openaire.eu/oidc/.well-known/openid-configuration> | <https://beta.aai.openaire.eu/oidc/.well-known/openid-configuration> |
+| Client registration    | _Contact us at `aai` `<AT>` `openaire.eu`_                      | _Contact us at `aai` `<AT>` `openaire.eu`_                           |
+| Authorisation          | <https://aai.openaire.eu/oidc/authorize>                        | <https://beta.aai.openaire.eu/oidc/authorize>                        |
+| Token                  | <https://aai.openaire.eu/oidc/token>                            | <https://beta.aai.openaire.eu/oidc/token>                            |
+| Device Code            | <https://aai.openaire.eu/oidc/devicecode>                       | <https://beta.aai.openaire.eu/oidc/devicecode>                       |
+| JSON Web Key(jwt)      | <https://aai.openaire.eu/oidc/jwk>                              | <https://beta.aai.openaire.eu/oidc/jwk>                              |
+| User Info              | <https://aai.openaire.eu/oidc/userinfo>                         | <https://beta.aai.openaire.eu/oidc/userinfo>                         |
+| Introspection          | <https://aai.openaire.eu/oidc/introspect>                       | <https://beta.aai.openaire.eu/oidc/introspect>                       |
 
 <!-- markdownlint-enable line-length -->
 
@@ -361,12 +338,8 @@ will not be useful since the token request relies on the initial secret.
 
 ###### Client configuration
 
-To enable PKCE you need to go to the
-[Manage Services Page](https://federation-demo.rciam.grnet.gr) and create/edit
-a client.
-In "Protocol" tab under "Token Endpoint Authentication Method" select "No
-authentication" and in "Crypto" tab under "Proof Key for Code Exchange (PKCE)
-Code Challenge Method" select "SHA-256 hash algorithm".
+To enable PKCE you need to send an email to `aai` `<AT>` `openaire.eu`,
+indicating the `client_id` of the client, and request to enable PKCE.
 
 ###### Protocol Flow
 
@@ -614,7 +587,7 @@ Example response:
   "device_code": "c4341bd6-5e82-4f9c-9f6f-5842409d48db",
   "expires_in": 600,
   "user_code": "IEJSJB",
-  "verification_uri": "https://rciam.example.org/oidc/device"
+  "verification_uri": "https://aai.openaire.eu/oidc/device"
 }
 ```
 
@@ -713,9 +686,9 @@ You can find the _Token Endpoint_ in the [Endpoints](#endpoints) table.
 
 ### Claims-based authorisation
 
-RCIAM provides information about the authenticated user that may be used
+OpenAIRE AAI provides information about the authenticated user that may be used
 by Service Providers in order to control user access to resources. This
-information is provided by the RCIAM OIDC Provider in the form of
+information is provided by the OpenAIRE AAI OpenID Provider in the form of
 [OIDC claims](#claims). The table below lists the claims that are relevant for
 user authorisation:
 
@@ -724,8 +697,6 @@ user authorisation:
 | Description                                                                                     | OIDC Claim              |
 | ----------------------------------------------------------------------------------------------- | ----------------------- |
 | [VO/group membership/roles of the authenticated user](#vogroup-membership-and-role-information) | `eduperson_entitlement` |
-| [Capabilities](#capabilities)                                                                   | `eduperson_entitlement` |
-| [Identity Assurance](#identity-assurance)                                                       | `eduperson_assurance`   |
 
 <!-- markdownlint-enable line-length -->
 
@@ -740,26 +711,24 @@ This guide assumes the Apache HTTP server has been installed and the document
 root is `/var/www/html`
 
 Move to the apache document root and download and extract
-[simple-oidc-client-php-v2.0.0.zip](https://github.com/rciam/simple-oidc-client-php/releases/download/v2.0.0/simple-oidc-client-php-v2.0.0.zip).
+[simple-oidc-client-php-v2.3.1.zip](https://github.com/rciam/simple-oidc-client-php/releases/download/v2.3.1/simple-oidc-client-php-v2.3.1.zip).
 
 #### Configure Client
 
-Login to the [RCIAM Federation Registry](https://federation-demo.rciam.grnet.gr)
+To register the Client in the BETA instance of OpenAIRE AAI you need to send as
+an email as described in [Client registration](#client-registration) section and
+include a `Redirect URI` (e.g.
+`http://localhost/simple-oidc-client-php/refreshtoken.php`), the needed Grant
+Type and Scopes. The Redirect URI must link to `refreshtoken.php` which is
+located in simple-oidc-client-php directory.
 
-Then create a new service or edit your existing service. In `General` tab fill
-all the required fields. For `Integration Environment` select `Demo`. In
-`Protocol Specific` tab select as Protocol the `OIDC Service` and then in the
-`Redirect URI(s)` insert your simple-oidc-client-php URL (e.g.
-`http://localhost/simple-oidc-client-php/refreshtoken.php`). This URL must link
-to `refreshtoken.php` which is located in simple-oidc-client-php directory.
-Next, in `Scope` select the scopes that your service needs. Then, submit the
-form and and self approve it. Finally you should get a pair of `Client ID` and
-`Client Secret`.
+A member of the OpenAIRE AAI Support team will take care of your request and
+they will send you the `Client ID` and `Client Secret`.
 
 #### Configure simple-oidc-client-php
 
 Now that you have everything you need, you can configure your login settings. Go
-to your terminal and open `config.php` with your favorite text editor.
+to your terminal and open `config.php` with your favourite text editor.
 
 Example:
 
@@ -813,7 +782,7 @@ $img = "https://clickhelp.co/images/feeds/blog/2016.05/keys.jpg";
 $scope_info = "This service requires the following permissions for your account:";
 
 // Client configuration
-$issuer = "https://rciam-demo.example.org/oidc/";
+$issuer = "https://beta.aai.openaire.eu/oidc/";
 $client_id = "CHANGE_ME";
 $client_secret = "CHANGE_ME";  // comment if you are using PKCE
 // $pkceCodeChallengeMethod = "S256";   // uncomment to use PKCE
@@ -836,26 +805,26 @@ $sessionLifetime = 60*60;  // must be equal to access token validation time in s
 ## User attributes
 
 This section defines the attributes that can be made available to services
-connected to RCIAM.
+connected to OpenAIRE AAI.
 
-### 1. RCIAM ID
+### 1. OpenAIRE ID
 
 <!-- markdownlint-disable line-length no-inline-html -->
 
-|          attribute name | RCIAM ID                                                                            |
-| ----------------------: | :---------------------------------------------------------------------------------- |
-|         **description** | An identifier for the user, unique among all RCIAM accounts and never reused        |
-|   **SAML Attribute(s)** | `1.3.6.1.4.1.5923.1.1.1.13` (eduPersonUniqueId)                                     |
-|          **OIDC scope** | `openid`                                                                            |
-|       **OIDC claim(s)** | `sub`                                                                               |
-| **OIDC claim location** | <ul><li>ID token</li><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul> |
-|              **origin** | RCIAM assigns this attribute on user registration                                   |
-|             **changes** | No                                                                                  |
-|        **multiplicity** | No                                                                                  |
-|        **availability** | Always                                                                              |
-|             **example** | _ef72285491ffe53c39b75bdcef46689f5d26ddfa00312365cc4fb5ce97e9ca87@example.org_      |
-|               **notes** | Use **RCIAM ID** within your application as the unique-identifier key for the user  |
-|              **status** | Stable                                                                              |
+|          attribute name | OpenAIRE ID                                                                               |
+| ----------------------: | :---------------------------------------------------------------------------------------- |
+|         **description** | An identifier for the user, unique among all OpenAIRE AAI accounts and never reused       |
+|   **SAML Attribute(s)** | `1.3.6.1.4.1.5923.1.1.1.13` (eduPersonUniqueId)                                           |
+|          **OIDC scope** | `openid`                                                                                  |
+|       **OIDC claim(s)** | `sub`                                                                                     |
+| **OIDC claim location** | <ul><li>ID token</li><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>       |
+|              **origin** | OpenAIRE AAI assigns this attribute on user registration                                  |
+|             **changes** | No                                                                                        |
+|        **multiplicity** | No                                                                                        |
+|        **availability** | Always                                                                                    |
+|             **example** | _ef72285491ffe53c39b75bdcef46689f5d26ddfa00312365cc4fb5ce97e9ca87@aai.openaire.eu_        |
+|               **notes** | Use **OpenAIRE AAI ID** within your application as the unique-identifier key for the user |
+|              **status** | Stable                                                                                    |
 
 <!-- markdownlint-enable line-length no-inline-html -->
 
@@ -910,28 +879,7 @@ connected to RCIAM.
 |               **notes** | -                                    |
 |              **status** | Stable                               |
 
-### 5. Username
-
-<!-- markdownlint-disable line-length no-inline-html -->
-
-|          attribute name | Username                                                                            |
-| ----------------------: | :---------------------------------------------------------------------------------- |
-|         **description** | The username by which the user wishes to be referred to                             |
-|   **SAML Attribute(s)** | `urn:oid:0.9.2342.19200300.100.1.1` (uid)                                           |
-|          **OIDC scope** | `profile`                                                                           |
-|       **OIDC claim(s)** | `preferred_username`                                                                |
-| **OIDC claim location** | <ul><li>ID token</li><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul> |
-|              **origin** | RCIAM assigns this attribute on user registration                                   |
-|             **changes** | No                                                                                  |
-|        **multiplicity** | Single-valued                                                                       |
-|        **availability** | Always                                                                              |
-|             **example** | _jdoe_                                                                              |
-|               **notes** | The Service Provider **MUST NOT** rely upon this value being unique                 |
-|              **status** | Stable                                                                              |
-
-<!-- markdownlint-enable line-length no-inline-html -->
-
-### 6. Email Address
+### 5. Email Address
 
 <!-- markdownlint-disable line-length no-inline-html -->
 
@@ -952,18 +900,18 @@ connected to RCIAM.
 
 <!-- markdownlint-enable line-length no-inline-html -->
 
-### 7. Verified email flag
+### 6. Verified email flag
 
 <!-- markdownlint-disable line-length no-inline-html -->
 
 |          attribute name | Verified email flag                                                 |
 | ----------------------: | :------------------------------------------------------------------ |
 |         **description** | True if the user's email address has been verified; otherwise false |
-|   **SAML Attribute(s)** | See [Verified email list](#8-verified-email-list)                   |
+|   **SAML Attribute(s)** | -                                                                   |
 |          **OIDC scope** | `email`                                                             |
 |       **OIDC claim(s)** | `email_verified`                                                    |
 | **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>  |
-|              **origin** | RCIAM assigns this attribute on user registration                   |
+|              **origin** | OpenAIRE AAI assigns this attribute on user registration            |
 |             **changes** | Yes                                                                 |
 |        **multiplicity** | Single-valued                                                       |
 |        **availability** | Always                                                              |
@@ -973,28 +921,7 @@ connected to RCIAM.
 
 <!-- markdownlint-enable line-length no-inline-html -->
 
-### 8. Verified email list
-
-<!-- markdownlint-disable line-length no-inline-html -->
-
-|          attribute name | Verified email list                                                 |
-| ----------------------: | :------------------------------------------------------------------ |
-|         **description** | A list of user's email addresses that have been verified            |
-|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.25178.4.1.14` (voPersonVerifiedEmail)          |
-|          **OIDC scope** | `email`                                                             |
-|       **OIDC claim(s)** | `voperson_verified_email`                                           |
-| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>  |
-|              **origin** | RCIAM or the user's Identity Provider                               |
-|             **changes** | Yes                                                                 |
-|        **multiplicity** | Multi-valued                                                        |
-|        **availability** | Not always                                                          |
-|             **example** | <ul><li>_john.doe@example.org_</li><li>_jdoe@example.com_</li></ul> |
-|               **notes** | -                                                                   |
-|              **status** | Experimental                                                        |
-
-<!-- markdownlint-enable line-length no-inline-html -->
-
-### 9. Affiliation
+### 8. Affiliation
 
 <!-- markdownlint-disable line-length no-inline-html -->
 
@@ -1002,10 +929,10 @@ connected to RCIAM.
 | ----------------------: | :----------------------------------------------------------------------- |
 |         **description** | The user's affiliation within a particular security domain (scope)       |
 |   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.5923.1.1.1.9` (eduPersonScopedAffiliation)          |
-|          **OIDC scope** | `eduperson_scoped_affiliation`                                           |
-|       **OIDC claim(s)** | `eduperson_scoped_affiliation`                                           |
+|          **OIDC scope** | -                                                                        |
+|       **OIDC claim(s)** | -                                                                        |
 | **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>       |
-|              **origin** | RCIAM assigns this attribute on user registration                        |
+|              **origin** | OpenAIRE AAI assigns this attribute on user registration                 |
 |             **changes** | Yes                                                                      |
 |        **multiplicity** | Multi-valued                                                             |
 |        **availability** | Always                                                                   |
@@ -1015,98 +942,33 @@ connected to RCIAM.
 
 <!-- markdownlint-enable line-length no-inline-html -->
 
-### 10. Groups
+### 9. Groups
 
 <!-- markdownlint-disable line-length no-inline-html -->
 
-|          attribute name | Groups                                                                         |
-| ----------------------: | :----------------------------------------------------------------------------- |
-|         **description** | The user's group/VO membership/role information expressed as entitlements      |
-|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.5923.1.1.1.7` (eduPersonEntitlement)                      |
-|          **OIDC scope** | `eduperson_entitlement`                                                        |
-|       **OIDC claim(s)** | `eduperson_entitlement`                                                        |
-| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>             |
-|              **origin** | Group memberships are managed by group administrators                          |
-|             **changes** | Yes                                                                            |
-|        **multiplicity** | Multi-valued                                                                   |
-|        **availability** | Not always                                                                     |
-|             **example** | _urn:mace:example.org:group:vo.example.org:role=vm_operator#rciam.example.org_ |
-|               **notes** | -                                                                              |
-|              **status** | Stable                                                                         |
-
-<!-- markdownlint-enable line-length no-inline-html -->
-
-### 11. Capabilities
-
-<!-- markdownlint-disable line-length no-inline-html -->
-
-|          attribute name | Capabilities                                                                                                                                                                                                                              |
-| ----------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|         **description** | This attribute describes the resource or child-resource a user is allowed to access, optionally specifying certain actions the user is entitled to perform, as described in [AARC-G027](https://aarc-community.org/guidelines/aarc-g027/) |
-|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.5923.1.1.1.7` (eduPersonEntitlement)                                                                                                                                                                                 |
-|          **OIDC scope** | `eduperson_entitlement`                                                                                                                                                                                                                   |
-|       **OIDC claim(s)** | `eduperson_entitlement`                                                                                                                                                                                                                   |
-| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>                                                                                                                                                                        |
-|              **origin** | Capabilities are managed by RCIAM                                                                                                                                                                                                         |
-|             **changes** | Yes                                                                                                                                                                                                                                       |
-|        **multiplicity** | Multi-valued                                                                                                                                                                                                                              |
-|        **availability** | Not always                                                                                                                                                                                                                                |
-|             **example** | _urn:mace:example.org:res:example-res#rciam.example.org_                                                                                                                                                                                  |
-|               **notes** | -                                                                                                                                                                                                                                         |
-|              **status** | Stable                                                                                                                                                                                                                                    |
-
-<!-- markdownlint-enable line-length no-inline-html -->
-
-### 12. Assurance
-
-<!-- markdownlint-disable line-length no-inline-html -->
-
-|          attribute name | Assurance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ----------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- |
-|         **description** | Assurance of the identity of the user, following [REFEDS Assurance Framework (RAF)](https://refeds.org/assurance) and the [RCIAM AAI Assurance Profiles](#level-of-assurance). The following RAF values are qualified and automatically set for all Community identities:<ul><li>$PREFIX$</li><li>$PREFIX$/ID/unique</li><li>$PREFIX$/ID/eppn-unique-no-reassign</li><li>$PREFIX$/IAP/low</li><li>$PREFIX$/ATP/ePA-1m</li><li>$PREFIX$/ATP/ePA-1d</li></ul>Following RAF values are set if the currently used authentication provider asserts (or otherwise qualifies to) them:<ul><li>$PREFIX$/IAP/medium</li><li>$PREFIX$/IAP/high</li></ul>The following compound profiles are asserted if the user qualifies to them<ul><li>$PREFIX$/profile/cappuccino</li><li>$PREFIX$/profile/espresso</li></ul> |
-|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.5923.1.1.1.11` (eduPersonAssurance)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|          **OIDC scope** | `eduperson_assurance`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|       **OIDC claim(s)** | `eduperson_assurance`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-|              **origin** | RCIAM assigns this attribute on user registration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|             **changes** | Yes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|        **multiplicity** | Multi-valued                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-|        **availability** | Not always                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-|             **example** | _[```https://rciam.example.org/LoA#Low```, ```https://refeds.org/assurance/IAP/low```]_                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-|               **notes** | -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|              **status** | Stable                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |     |
-
-<!-- markdownlint-enable line-length no-inline-html -->
-
-### 13. SSH Public Key
-
-<!-- markdownlint-disable line-length no-inline-html -->
-
-|          attribute name | SSH Public Key                                                    |
-| ----------------------: | :---------------------------------------------------------------- |
-|         **description** | Provides information about the user's SSH public key(s)           |
-|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.24552.500.1.1.1.13` (sshPublicKey)           |
-|          **OIDC scope** | `ssh_public_key`                                                  |
-|       **OIDC claim(s)** | `ssh_public_key`                                                  |
-| **OIDC claim location** | Userinfo endpoint                                                 |
-|              **origin** | Added SSH public key(s) in user's RCIAM Profile                   |
-|             **changes** | Yes                                                               |
-|        **multiplicity** | Multi-valued                                                      |
-|        **availability** | Not always                                                        |
-|             **example** | `ssh-rsa AAAAB3NzaC...qxxEEipdnZ nikosev@grnet-hq.admin.grnet.gr` |
-|               **notes** | -                                                                 |
-|              **status** | Experimental                                                      |
+|          attribute name | Groups                                                                       |
+| ----------------------: | :--------------------------------------------------------------------------- |
+|         **description** | The user's group/VO membership/role information expressed as entitlements    |
+|   **SAML Attribute(s)** | `urn:oid:1.3.6.1.4.1.5923.1.1.1.7` (eduPersonEntitlement)                    |
+|          **OIDC scope** | `eduperson_entitlement`                                                      |
+|       **OIDC claim(s)** | `eduperson_entitlement`                                                      |
+| **OIDC claim location** | <ul><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>           |
+|              **origin** | Group memberships are managed by group administrators                        |
+|             **changes** | Yes                                                                          |
+|        **multiplicity** | Multi-valued                                                                 |
+|        **availability** | Not always                                                                   |
+|             **example** | _urn:mace:example.org:group:vo.example.org:role=vm_operator#aai.openaire.eu_ |
+|               **notes** | -                                                                            |
+|              **status** | Stable                                                                       |
 
 <!-- markdownlint-enable line-length no-inline-html -->
 
 ## User authorisation
 
 The following information about the authenticated user can be provided by
-RCIAM in order to control user access to resources:
+OpenAIRE AAI in order to control user access to resources:
 
 1. VO/group membership and role information about the authenticated user
-1. Capabilities
-1. Identity Assurance
 
 ### VO/group membership and role information
 
@@ -1144,112 +1006,5 @@ where:
 **Example:**
 
 ```text
-urn:mace:example.org:group:vo.example.org:role=vm_operator#rciam.example.org
+urn:mace:example.org:group:vo.example.org:role=member#aai.openaire.eu
 ```
-
-### Capabilities
-
-#### Background
-
-The user's capability information is encoded in entitlements
-(`eduPersonEntitlement` attribute values in SAML or `eduperson_entitlement`
-claim in OIDC). These entitlements are typically used to indicate access rights
-to protected resources. Entitlements are multi-valued, with each value formatted
-as a URN following the syntax defined in
-[AARC-G027](https://aarc-community.org/guidelines/aarc-g027/).
-
-#### Syntax
-
-An entitlement value expressing a capability has the following syntax
-(components enclosed in square brackets are OPTIONAL):
-
-```text
-<NAMESPACE>:res:<RESOURCE>[:<CHILD-RESOURCE>]...[:act:<ACTION>[,<ACTION>]...]#<AUTHORITY>
-```
-
-where:
-
-- `<NAMESPACE>` is controlled by the e-infrastructure, research infrastructure
-  or research collaboration that manages the capability. The `<NAMESPACE>` of
-  capabilities managed by RCIAM is set to `urn:mace:example.org`, while,
-  generally, it is in the form of
-  `urn:<NID>:<DELEGATED-NAMESPACE>[:<SUBNAMESPACE>]...` where:
-
-  - `<NID>` is the namespace identifier associated with a URN namespace
-    registered with IANA2, ensuring global uniqueness. Implementers SHOULD use
-    one of the existing registered URN namespaces, such as
-    `urn:mace`[[MACE](https://incommon.org/community/mace-registries/mace-urn-registry/)].
-
-  - `<DELEGATED-NAMESPACE>` is a URN sub-namespace delegated from one of the
-    IANA registered NIDs to an organisation representing the e-infrastructure,
-    research infrastructure or research collaboration. It is RECOMMENDED that a
-    publicly accessible URN value registry for each delegated namespace be
-    provided.
-
-- The literal string `"res"` indicates that this is a resource-specific
-  entitlement as opposed to, for example, an entitlement used for expressing
-  group membership
-  [AARC-G002](https://aarc-community.org/guidelines/aarc-g002/).
-
-- `<RESOURCE>` is the name of the resource. Whether the name should be unique is
-  an implementation decision.
-
-- An optional list of colon-separated `<CHILD-RESOURCE>` components represents a
-  specific branch of the hierarchy of resources under the identified
-  `<RESOURCE>`.
-
-- An optional list of comma-separated `<ACTION>`s MAY be included, which, if
-  present, MUST be prefixed with the literal string “act”. This component MAY be
-  used for further specifying the actions a user is entitled to do at a given
-  resource. Note that the list of `<ACTION>`s is scoped to the rightmost
-  child-resource; if no child-resource information is specified, actions apply
-  to the top level resource. The interpretation of a capability without actions
-  specified is an implementation detail.
-
-- `<AUTHORITY>` is a mandatory and non-empty string that indicates the
-  authoritative source of the capability. This SHOULD be used to further specify
-  the exact issuing instance. For example, it MAY be the FQDN of the service
-  that issued that specific capability. The `<AUTHORITY>` is specified in the
-  f-component [RFC8141](https://tools.ietf.org/html/rfc8141) of the URN; thus,
-  it is introduced by the number sign ("#") character and terminated by the end
-  of the URN. All characters must be encoded according to
-  [RFC8141](https://tools.ietf.org/html/rfc8141). Hence, the `<AUTHORITY>` MUST
-  NOT be considered when determining equivalence (Section 3 in
-  [RFC8141](https://tools.ietf.org/html/rfc8141)) of URN-formatted capabilities.
-  The `<AUTHORITY>` of capabilities managed by RCIAM is typically set to
-  `rciam.example.org`.
-
-**Example:**
-
-```text
-urn:mace:example.org:res:example-res#rciam.example.org
-```
-
-### Identity Assurance
-
-Based on the authentication method selected by the user, the RCIAM proxy
-assigns a Identity Assurance, which is conveyed to the SP through both the
-`eduPersonAssurance` attribute and the Authentication Context Class
-(`AuthnContextClassRef`) of the SAML authentication response. RCIAM uses
-Assurance Profiles which distinguish between three Identity Assurance levels,
-similarly to the
-[eID Assurance Framework (eIDAF)](http://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:JOL_2015_235_R_0002).
-Each level is represented by a URI as follows:
-
-- **Low**: Authentication through a social identity provider or other low
-  identity assurance provider: `https://rciam.example.org/LoA#Low`
-- **Substantial**: Password/X.509 authentication at the user\'s home IdP:
-  `https://rciam.example.org/LoA#Substantial`
-- **High**: Substantial + multi-factor authn (not yet supported, TBD):
-  `https://rciam.example.org/LoA#High`
-
-Moreover, RCIAM follows the
-[REFEDS Assurance framework (RAF)](https://wiki.refeds.org/display/ASS/REFEDS+Assurance+Framework+ver+1.0).
-The RCIAM conveys any RAF values provided by the IdP directly to the SP,
-through the aforementioned methods. Furthermore, RCIAM will append into the
-User's profile any additional LoA, if the user is eligible for it. For example,
-a user having a Verified Email is eligible for the RAF value
-`https://refeds.org/assurance/IAP/low`
-
-Some RCIAM SPs have been configured to provide limited access (or not to accept at
-all) credentials with the Low LoA.

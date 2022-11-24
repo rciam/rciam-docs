@@ -4,10 +4,10 @@
       "pattern": "^http://localhost"
     },
     {
-      "pattern": "^https://rciam-demo.example.org"
+      "pattern": "^https://beta.aai.openaire.eu/oidc"
     },
     {
-      "pattern": "^https://rciam.example.org"
+      "pattern": "^https://aai.openaire.eu/oidc"
     }
   ]
 }
