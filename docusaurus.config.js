@@ -4,7 +4,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
-  title: 'OpenAIRE Login Docs',
+  title: 'OpenAIRE AAI Docs',
   tagline: 'Secure Access Made Easy',
   url: 'https://openaire.github.io',
   baseUrl: '/login-docs/',
@@ -23,7 +23,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+          editUrl: 'https://github.com/openaire/login-docs/tree/main/docs',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -43,18 +43,18 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
           src: 'img/openaire-favicon.ico',
         },
         items: [
-          {
-            type: 'doc',
-            docId: 'user/signup',
-            position: 'left',
-            label: 'End-User',
-          },
-          {
-            type: 'doc',
-            docId: 'manager/virtual-organisations',
-            position: 'left',
-            label: 'Manager',
-          },
+          //{
+          //  type: 'doc',
+          //  docId: 'user/signup',
+          //  position: 'left',
+          //  label: 'End-User',
+          //},
+          //{
+          //  type: 'doc',
+          //  docId: 'manager/virtual-organisations',
+          //  position: 'left',
+          //  label: 'Manager',
+          //},
           {
             type: 'doc',
             docId: 'developer/guide-for-sps',
