@@ -81,6 +81,12 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
           // },
           {
             type: 'doc',
+            docId: 'changelog',
+            position: 'left',
+            label: 'Changelog',
+          },
+          {
+            type: 'doc',
             docId: 'roadmap',
             position: 'left',
             label: 'Roadmap',
