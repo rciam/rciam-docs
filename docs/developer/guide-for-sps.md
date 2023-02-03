@@ -39,7 +39,7 @@ more information can be found in the protocol-specific sections that follow.
 | Protocol       | Production environment                                          | BETA environment                                                     |
 | -------------- | --------------------------------------------------------------- | -------------------------------------------------------------------- |
 | SAML           | <https://aai.openaire.eu/proxy/saml2/idp/metadata.php>          | <https://beta.aai.openaire.eu/proxy/saml2/idp/metadata.php>          |
-| OpenID Connect | <https://aai.openaire.eu/oidc/.well-known/openid-configuration> | <https://beta.aai.openaire.eu/oidc/.well-known/openid-configuration> |
+| OpenID Connect | <https://aai.openaire.eu/oidc/.well-known/openid-configuration> | <https://beta.aai.openaire.eu/auth/realms/openaire/.well-known/openid-configuration> |
 
 <!-- markdownlint-enable line-length -->
 
@@ -210,6 +210,14 @@ institutional IdPs registered with eduGAIN or Social Providers. Once the user
 has signed in, OpenAIRE AAI can return OIDC Claims containing information about
 the authenticated user.
 
+:::caution
+
+The OpenAIRE AAI OpenID Provider is being migrated to Keycloak. Please check
+[OIDC Client Migration to Keycloak](#client-migration-to-keycloak) for more
+details
+
+:::
+
 ### Client registration
 
 Before your service can use the OpenAIRE AAI OpenID Provider for user login, you
@@ -223,6 +231,9 @@ client secret. You also need to specify:
 - One or more scopes to indicate the requested Claims about the End-User (see
   [Claims](#claims) section)
 - The OpenID Connect/OAuth2 grant type (see [Grant Types](#grant-types) section)
+- One or more Post Logout Redirection URI(s) to indicate the URLs allowed to
+  request that the End-User's browser be redirected after a logout has been
+  performed using the `post_logout_redirect_uri` parameter.
 
 #### Setting additional information about the client
 
@@ -277,14 +288,16 @@ The most important OIDC/OAuth2 endpoints are listed below:
 
 | Endpoint               | Production environment                                          | BETA environment                                                     |
 | ---------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Provider configuration | <https://aai.openaire.eu/oidc/.well-known/openid-configuration> | <https://beta.aai.openaire.eu/oidc/.well-known/openid-configuration> |
-| Client registration    | _Contact us at `aai` `<AT>` `openaire.eu`_                      | _Contact us at `aai` `<AT>` `openaire.eu`_                           |
-| Authorisation          | <https://aai.openaire.eu/oidc/authorize>                        | <https://beta.aai.openaire.eu/oidc/authorize>                        |
-| Token                  | <https://aai.openaire.eu/oidc/token>                            | <https://beta.aai.openaire.eu/oidc/token>                            |
-| Device Code            | <https://aai.openaire.eu/oidc/devicecode>                       | <https://beta.aai.openaire.eu/oidc/devicecode>                       |
-| JSON Web Key(jwt)      | <https://aai.openaire.eu/oidc/jwk>                              | <https://beta.aai.openaire.eu/oidc/jwk>                              |
-| User Info              | <https://aai.openaire.eu/oidc/userinfo>                         | <https://beta.aai.openaire.eu/oidc/userinfo>                         |
-| Introspection          | <https://aai.openaire.eu/oidc/introspect>                       | <https://beta.aai.openaire.eu/oidc/introspect>                       |
+| Provider configuration | <https://aai.openaire.eu/oidc/.well-known/openid-configuration> | <ul><li><https://beta.aai.openaire.eu/oidc/.well-known/openid-configuration> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/.well-known/openid-configuration> (Keycloak)</li></ul> |
+| Client registration    | _Contact us at `aai` `<AT>` `openaire.eu`_                      | _Contact us at `aai` `<AT>` `openaire.eu`_                                                                                       |
+| Issuer                 | <https://aai.openaire.eu/oidc/>                                 | <ul><li>`https://beta.aai.openaire.eu/oidc/` (MITREid Connect)</li><li>`https://beta.aai.openaire.eu/auth/realms/openaire` (Keycloak)</li></ul>                                                                  |
+| Authorisation          | <https://aai.openaire.eu/oidc/authorize>                        | <ul><li><https://beta.aai.openaire.eu/oidc/authorize> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/auth> (Keycloak)</li></ul>                            |
+| Token                  | <https://aai.openaire.eu/oidc/token>                            | <ul><li><https://beta.aai.openaire.eu/oidc/token> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/token> (Keycloak)</li></ul>                               |
+| Device Code            | <https://aai.openaire.eu/oidc/devicecode>                       | <ul><li><https://beta.aai.openaire.eu/oidc/devicecode> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/auth/device> (Keycloak)</li></ul>                    |
+| JSON Web Key(jwt)      | <https://aai.openaire.eu/oidc/jwk>                              | <ul><li><https://beta.aai.openaire.eu/oidc/jwk> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/certs> (Keycloak)</li></ul>                                 |
+| User Info              | <https://aai.openaire.eu/oidc/userinfo>                         | <ul><li><https://beta.aai.openaire.eu/oidc/userinfo> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/userinfo> (Keycloak)</li></ul>                         |
+| Introspection          | <https://aai.openaire.eu/oidc/introspect>                       | <ul><li><https://beta.aai.openaire.eu/oidc/introspect> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/token/introspect> (Keycloak)</li></ul>               |
+| Logout                 | <https://aai.openaire.eu/oidc/saml/logout>                      | <ul><li><https://beta.aai.openaire.eu/oidc/saml/logout> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/logout> (Keycloak)</li></ul>                        |
 
 <!-- markdownlint-enable line-length -->
 
@@ -360,7 +373,7 @@ If the client is capable of using `S256`, it MUST use `S256`. Clients are
 permitted to use `plain` only if they cannot support `S256` for some technical
 reason.
 
-:::info
+:::tip
 
 There are various tools that generate these values such as
 <https://tonyxu-io.github.io/pkce-generator/>
@@ -800,6 +813,151 @@ $manage_token_note = "You can manage your refresh tokens in the following link: 
 $manageTokens = $issuer . "manage/user/services";
 $sessionName = "simple-oidc-client-php";
 $sessionLifetime = 60*60;  // must be equal to access token validation time in seconds
+```
+
+### Client Migration to Keycloak
+
+The migration guide below applies to OIDC clients registered in the
+**BETA** environment of the OpenAIRE AAI.
+
+:::danger
+
+Beginning **March 1, 2023**, clients using the legacy OIDC endpoints
+in the **BETA** environment will no longer be supported.
+
+:::
+
+#### How to Migrate your Service to Keycloak
+
+All the clients that were registered in MITREid Connect have been moved to
+Keycloak preserving all the options (Client ID, Client Secret, Redirect URIs
+etc.), so you do not need to re-register your client.
+
+##### New Endpoints
+
+The first thing you need to do is to update the OIDC endpoints according to the
+[Endpoints](#endpoints) table. If your OIDC Application/Library supports
+[OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html),
+then you only need to update the `issuer`. Otherwise, you need to update all
+the Endpoints separately, most notably the Authorization Endpoint, the Token
+Endpoint and the UserInfo Endpoint.
+
+##### Size of the Tokens
+
+The size of the Access/Refresh Tokens issued by Keycloak is larger compared to
+the respective Tokens issued by MITREid Connect. For example, the size of an
+Access Token is around 1400 characters, depending on the information that is
+included in the payload of the JWT. So make sure that your OIDC implementation
+can handle larger Tokens.
+
+##### Logout
+
+The Redirection URI query parameter in the logout request has been changed from
+`redirect` to `post_logout_redirect_uri` and MUST be URL encoded. Also, the
+allowed value(s) for the `post_logout_redirect_uri` parameter MUST be
+pre-registered in the client configuration on the OpenAIRE AAI.
+
+##### Token Introspection
+
+The Token Introspection is available to all the clients that are using any
+authentication method (`client_secret_basic`, `client_secret_post`,
+`client_secret_jwt` or `private_key_jwt`) (Confidential Clients) to the Token
+Endpoint. Public Clients (clients that do not use any authentication method)
+will not be able to get a successful response from the Introspection Endpoint.
+
+##### PKCE
+
+Enabling Proof Key for Code Exchange (PKCE) is highly recommended to avoid code
+injection and code replay attacks. If your client **cannot** use PKCE, please
+make sure that PKCE is **disabled** in the client configuration on the OpenAIRE
+AAI. Otherwise, you will get the following HTTP response during authentication:
+
+```http
+error=invalid_request&error_description=Missing parameter: code_challenge_method
+```
+
+To enable/disable PKCE for your client, you need to send your request via email
+to `aai` `<AT>` `openaire.eu`, indicating the `client_id` of the client.
+
+##### Device Code Grant
+
+If you are using a confidential client with the Device Code grant, please make
+sure that the `client_secret` is present in the request to the Device Code
+Endpoint either as HTTP Basic or HTTP POST parameter (see
+[Device Authorization Request](#1-device-authorization-request)).
+
+##### Token Exchange Grant
+
+If you are using the Token Exchange grant, please make sure that the `audience`
+(optional parameter) defines the logical name of the service that the token will
+be used for; when specified, it MUST match the client ID of a client registered in the OpenAIRE AAI otherwise an `invalid_client` error is returned
+(`"description": "audience not found"`).
+
+##### Client Credentials Grant
+
+If you are using the Client Credentials grant, there is a minor change in the
+responses from UserInfo and Introspection Endpoints. The **Client ID** of the
+client is released through the `client_id` Claim instead of the `sub` Claim.
+The `sub` Claim is still present in the response but contains a unique, opaque,
+non-reassignable identifier of the client, typically scoped `@openaire.eu`.
+
+#### Common issues
+
+##### Error messages referring to missing `code_challenge`, `code_challenge_method` or `code_verifier` HTTP parameter
+
+If you get error messages containing the PKCE HTTP parameters, probably the PKCE
+mode is enabled in your Client Configuration but your OIDC Client library is not
+using PKCE. To fix this, refer to the [PKCE section](#pkce) of the migration
+guide.
+
+##### Error messages referring to `invalid_code`
+
+If you try to perform the Authorization Code flow and you get an `invalid_code`
+error message, probably your OIDC Client sends the Authorization Request to the
+Authorization Endpoint of the Keycloak based OpenAIRE OP and then sends the
+`code` to the Token Endpoint of the MITREid Connect based OpenAIRE OP or
+vice versa.
+
+To fix this you need to verify that you have updated all the OIDC Endpoints with
+the Keycloak ones. You can find all the OIDC Endpoints of Keycloak in the
+[Endpoint](#endpoints) table.
+
+##### Error messages referring to the `redirect_uri`
+
+If you try to perform the Authorization Code flow and you get an
+`invalid_redirect_uri` error, probably the `redirect_uri` in the Authorization
+Request does not match any of the allowed Redirection URIs in the Client
+Configuration.
+
+To solve this, you need to send the updated list of allowed Redirection URIs via
+email to `aai` `<AT>` `openaire.eu`, indicating the `client_id` of the client.
+
+##### UserInfo `invalid_token` or `401 Unauthorized` error response
+
+If you are trying to make a request to the UserInfo Endpoint and the response
+contains the `invalid_token` error message, probably you are using an invalid
+Token or the UserInfo Endpoint is wrong.
+
+To solve this, please make sure the that:
+
+1. You have obtained an Keycloak issued Access Token and you make a request to
+   the Keycloak based UserInfo Endpoint
+1. You have added the Access Token to the Authorization header of the request
+
+##### `502 Bad Gateway` error after redirecting back to the Service
+
+If you are using NGINX as a Reverse Proxy, and you are getting the following
+error message in the logs:
+
+> upstream sent too big header while reading response header from upstream
+
+Then you need to increase the size of the buffer by adding the following options
+in the vhost configuration:
+
+```nginx
+proxy_buffers 4 256k;
+proxy_buffer_size 128k;
+proxy_busy_buffers_size 256k;
 ```
 
 ## User attributes
