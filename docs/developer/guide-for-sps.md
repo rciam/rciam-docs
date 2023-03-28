@@ -39,7 +39,7 @@ more information can be found in the protocol-specific sections that follow.
 | Protocol       | Production environment                                          | BETA environment                                                     |
 | -------------- | --------------------------------------------------------------- | -------------------------------------------------------------------- |
 | SAML           | <https://aai.openaire.eu/proxy/saml2/idp/metadata.php>          | <https://beta.aai.openaire.eu/proxy/saml2/idp/metadata.php>          |
-| OpenID Connect | <https://aai.openaire.eu/oidc/.well-known/openid-configuration> | <https://beta.aai.openaire.eu/auth/realms/openaire/.well-known/openid-configuration> |
+| OpenID Connect | <ul><li><https://aai.openaire.eu/oidc/.well-known/openid-configuration> (MITREid Connect)</li><li><https://aai.openaire.eu/auth/realms/openaire/.well-known/openid-configuration> (Keycloak)</li></ul> | <ul><li><https://beta.aai.openaire.eu/oidc/.well-known/openid-configuration> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/.well-known/openid-configuration> (Keycloak)</li></ul> |
 
 <!-- markdownlint-enable line-length -->
 
@@ -260,6 +260,7 @@ UserInfo Endpoint:
 | Scope                   | Claims                                                              |
 | ----------------------- | ------------------------------------------------------------------- |
 | `openid`                | `sub`                                                               |
+| `voperson_id`           | `voperson_id`                                                       |
 | `profile`               | <ul><li>`name`</li><li>`given_name`</li><li>`family_name`</li></ul> |
 | `email`                 | <ul><li>`email`</li><li>`email_verified`</li></ul>                  |
 | `eduperson_entitlement` | `eduperson_entitlement`                                             |
@@ -288,16 +289,16 @@ The most important OIDC/OAuth2 endpoints are listed below:
 
 | Endpoint               | Production environment                                          | BETA environment                                                     |
 | ---------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Provider configuration | <https://aai.openaire.eu/oidc/.well-known/openid-configuration> | <ul><li><https://beta.aai.openaire.eu/oidc/.well-known/openid-configuration> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/.well-known/openid-configuration> (Keycloak)</li></ul> |
-| Client registration    | _Contact us at `aai` `<AT>` `openaire.eu`_                      | _Contact us at `aai` `<AT>` `openaire.eu`_                                                                                       |
-| Issuer                 | <https://aai.openaire.eu/oidc/>                                 | <ul><li>`https://beta.aai.openaire.eu/oidc/` (MITREid Connect)</li><li>`https://beta.aai.openaire.eu/auth/realms/openaire` (Keycloak)</li></ul>                                                                  |
-| Authorisation          | <https://aai.openaire.eu/oidc/authorize>                        | <ul><li><https://beta.aai.openaire.eu/oidc/authorize> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/auth> (Keycloak)</li></ul>                            |
-| Token                  | <https://aai.openaire.eu/oidc/token>                            | <ul><li><https://beta.aai.openaire.eu/oidc/token> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/token> (Keycloak)</li></ul>                               |
-| Device Code            | <https://aai.openaire.eu/oidc/devicecode>                       | <ul><li><https://beta.aai.openaire.eu/oidc/devicecode> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/auth/device> (Keycloak)</li></ul>                    |
-| JSON Web Key(jwt)      | <https://aai.openaire.eu/oidc/jwk>                              | <ul><li><https://beta.aai.openaire.eu/oidc/jwk> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/certs> (Keycloak)</li></ul>                                 |
-| User Info              | <https://aai.openaire.eu/oidc/userinfo>                         | <ul><li><https://beta.aai.openaire.eu/oidc/userinfo> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/userinfo> (Keycloak)</li></ul>                         |
-| Introspection          | <https://aai.openaire.eu/oidc/introspect>                       | <ul><li><https://beta.aai.openaire.eu/oidc/introspect> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/token/introspect> (Keycloak)</li></ul>               |
-| Logout                 | <https://aai.openaire.eu/oidc/saml/logout>                      | <ul><li><https://beta.aai.openaire.eu/oidc/saml/logout> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/logout> (Keycloak)</li></ul>                        |
+| Provider configuration | <ul><li><https://aai.openaire.eu/oidc/.well-known/openid-configuration> (MITREid Connect)</li><li><https://aai.openaire.eu/auth/realms/openaire/.well-known/openid-configuration> (Keycloak)</li></ul> | <ul><li><https://beta.aai.openaire.eu/oidc/.well-known/openid-configuration> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/.well-known/openid-configuration> (Keycloak)</li></ul>                                                           |
+| Client registration    | _Contact us at `aai` `<AT>` `openaire.eu`_                      | _Contact us at `aai` `<AT>` `openaire.eu`_                                                                                                                                                                       |
+| Issuer                 | <ul><li>`https://aai.openaire.eu/oidc/` (MITREid Connect)</li><li>`https://aai.openaire.eu/auth/realms/openaire` (Keycloak)</li></ul> | <ul><li>`https://beta.aai.openaire.eu/oidc/` (MITREid Connect)</li><li>`https://beta.aai.openaire.eu/auth/realms/openaire` (Keycloak)</li></ul>                                                                                                                                                                                             |
+| Authorisation          | <ul><li><https://aai.openaire.eu/oidc/authorize> (MITREid Connect)</li><li><https://aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/auth> (Keycloak)</li></ul>                        | <ul><li><https://beta.aai.openaire.eu/oidc/authorize> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/auth> (Keycloak)</li></ul>                                                                                          |
+| Token                  | <ul><li><https://aai.openaire.eu/oidc/token> (MITREid Connect)</li><li><https://aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/token> (Keycloak)</li></ul> | <ul><li><https://beta.aai.openaire.eu/oidc/token> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/token> (Keycloak)</li></ul>                                                                                                                       |
+| Device Code            | <ul><li><https://aai.openaire.eu/oidc/devicecode> (MITREid Connect)</li><li><https://aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/auth/device> (Keycloak)</li></ul> | <ul><li><https://beta.aai.openaire.eu/oidc/devicecode> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/auth/device> (Keycloak)</li></ul>                                                                                                 |
+| JSON Web Key(jwt)      | <ul><li><https://aai.openaire.eu/oidc/jwk> (MITREid Connect)</li><li><https://aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/certs> (Keycloak)</li></ul> | <ul><li><https://beta.aai.openaire.eu/oidc/jwk> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/certs> (Keycloak)</li></ul>                                                                                                                           |
+| User Info              | <ul><li><https://aai.openaire.eu/oidc/userinfo> (MITREid Connect)</li><li><https://aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/userinfo> (Keycloak)</li></ul> | <ul><li><https://beta.aai.openaire.eu/oidc/userinfo> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/userinfo> (Keycloak)</li></ul>                                                                                                           |
+| Introspection          | <ul><li><https://aai.openaire.eu/oidc/introspect> (MITREid Connect)</li><li><https://aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/token/introspect> (Keycloak)</li></ul> | <ul><li><https://beta.aai.openaire.eu/oidc/introspect> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/token/introspect> (Keycloak)</li></ul>                                                                                       |
+| Logout                 | <ul><li><https://aai.openaire.eu/oidc/saml/logout> (MITREid Connect)</li><li><https://aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/logout> (Keycloak)</li></ul> | <ul><li><https://beta.aai.openaire.eu/oidc/saml/logout> (MITREid Connect)</li><li><https://beta.aai.openaire.eu/auth/realms/openaire/protocol/openid-connect/logout> (Keycloak)</li></ul>                                                                                                         |
 
 <!-- markdownlint-enable line-length -->
 
@@ -818,11 +819,11 @@ $sessionLifetime = 60*60;  // must be equal to access token validation time in s
 ### Client Migration to Keycloak
 
 The migration guide below applies to OIDC clients registered in the
-**BETA** environment of the OpenAIRE AAI.
+MITREid Connect based OpenID Provider of the OpenAIRE AAI.
 
 :::danger
 
-Beginning **March 1, 2023**, clients using the legacy OIDC endpoints
+Beginning **May 2, 2023**, clients using the legacy OIDC endpoints
 in the **BETA** environment will no longer be supported.
 
 :::
@@ -965,23 +966,23 @@ proxy_busy_buffers_size 256k;
 This section defines the attributes that can be made available to services
 connected to OpenAIRE AAI.
 
-### 1. OpenAIRE ID
+### 1. User Identifier
 
 <!-- markdownlint-disable line-length no-inline-html -->
 
-|          attribute name | OpenAIRE ID                                                                               |
+|          attribute name | User Identifier
 | ----------------------: | :---------------------------------------------------------------------------------------- |
-|         **description** | An identifier for the user, unique among all OpenAIRE AAI accounts and never reused       |
-|   **SAML Attribute(s)** | `1.3.6.1.4.1.5923.1.1.1.13` (eduPersonUniqueId)                                           |
-|          **OIDC scope** | `openid`                                                                                  |
-|       **OIDC claim(s)** | `sub`                                                                                     |
+|         **description** | A globally unique, opaque, persistent and non-reassignable identifier for the user. For users whose community identity is managed by the OpenAIRE AAI, this identifier is of the form `<uniqueID>@openaire.eu`. The `<uniqueID>` portion is an opaque identifier issued by the OpenAIRE AAI. |
+|   **SAML Attribute(s)** | <ul><li>`urn:oid:1.3.6.1.4.1.25178.4.1.6` (voPersonID)</li><li>`1.3.6.1.4.1.5923.1.1.1.13` (eduPersonUniqueId)</li></ul> |
+|          **OIDC scope** | <ul><li>`voperson_id`</li><li>`openid`</li></ul>                                          |
+|       **OIDC claim(s)** | <ul><li>`voperson_id`</li><li>`sub`</li></ul>                                             |
 | **OIDC claim location** | <ul><li>ID token</li><li>Userinfo endpoint</li><li>Introspection endpoint</li></ul>       |
-|              **origin** | OpenAIRE AAI assigns this attribute on user registration                                  |
+|              **origin** | The User Identifier is assigned by the OpenAIRE AAI or an external AAI service managing the community identity of the user |
 |             **changes** | No                                                                                        |
 |        **multiplicity** | No                                                                                        |
 |        **availability** | Always                                                                                    |
 |             **example** | _ef72285491ffe53c39b75bdcef46689f5d26ddfa00312365cc4fb5ce97e9ca87@aai.openaire.eu_        |
-|               **notes** | Use **OpenAIRE AAI ID** within your application as the unique-identifier key for the user |
+|               **notes** | Use the User Identifier within your application as the unique identifier key for the user |
 |              **status** | Stable                                                                                    |
 
 <!-- markdownlint-enable line-length no-inline-html -->
