@@ -698,6 +698,52 @@ You can find the _Token Endpoint_ in the [Endpoints](#endpoints) table.
 
 :::
 
+#### Logout Endpoint
+
+The OpenAIRE AAI OpenID Provider supports the
+[OpenID Connect RP-Initiated Logout](https://openid.net/specs/openid-connect-rpinitiated-1_0.html)
+specification where the logout starts by redirecting the user to a specific
+endpoint at the OpenID Provider.
+
+This endpoint is normally obtained via the `end_session_endpoint` element of the
+OP's Configuration page and the parameters that are used in the logout request
+at the Logout Endpoint are defined below:
+
+- `id_token_hint`: ID Token previously issued by the OP to the Relying Party
+  passed to the Logout Endpoint as a hint about the end user's current
+  authenticated session with the Client. This is used as an indication of the
+  identity of the end user that the RP is requesting be logged out by the OP.
+- `client_id`: OAuth 2.0 Client Identifier valid at the Authorization Server.
+  This parameter is needed to specify the Client Identifier when
+  `post_logout_redirect_uri` is used but `id_token_hint` is not. Using this
+  parameter, a confirmation dialog will be presented to the end user.
+- `post_logout_redirect_uri`: URI to which the RP is requesting that the end
+  user's browser be redirected after a logout has been performed. This URI
+  should use the HTTPS scheme and the value must have been previously registered
+  in the client configuration. Note that you need
+  to include either the `client_id` or `id_token_hint` parameter in case the
+  `post_logout_redirect_uri` is included.
+
+##### Example Requests
+
+```http
+  HTTP/1.1 302 Found
+  Location: ${LOGOUT_ENDPOINT}?
+    id_token_hint=${ID_TOKEN}
+```
+
+```http
+  HTTP/1.1 302 Found
+  Location: ${LOGOUT_ENDPOINT}?
+    client_id=${CLIENT_ID}
+```
+
+:::info
+
+You can find the `LOGOUT_ENDPOINT` in the [Endpoints](#endpoints) table.
+
+:::
+
 ### Claims-based authorisation
 
 OpenAIRE AAI provides information about the authenticated user that may be used
@@ -856,7 +902,9 @@ can handle larger Tokens.
 The Redirection URI query parameter in the logout request has been changed from
 `redirect` to `post_logout_redirect_uri` and MUST be URL encoded. Also, the
 allowed value(s) for the `post_logout_redirect_uri` parameter MUST be
-pre-registered in the client configuration on the OpenAIRE AAI.
+pre-registered in the client configuration on the OpenAIRE AAI. See
+[Logout Endpoint](#logout-endpoint) for additional parameters that
+need to be specified in the logout request.
 
 ##### Token Introspection
 
