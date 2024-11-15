@@ -4,7 +4,141 @@ sidebar_position: 4
 
 # Groups
 
+This page provides information about using RCIAM for managing your Group.
+
+## Background
+
+In simple terms, a Group is a collection of users. In RCIAM, Groups are created to organise researchers who aim to share resources across services to achieve a common goal within scientific collaborations.
+
+## Group Management
+
+Groups in RCIAM go beyond simple collections of users, providing structured membership management and advanced enrollment workflows tailored for complex access needs. Organised hierarchically, groups can contain subgroups within parent groups, with centralised administration allowing membership expirations to cascade through child memberships. This setup streamlines administrative tasks while enhancing security.
+
+
+### Group Admins 
+In RCIAM, Groups are managed by Group Admins, who have several key responsibilities:
+
+- [**Managing roles**](#view-group-details-and-manage-group-roles) for specific permissions within the Group.
+- [**Managing member roles**](#manage-group-member-roles) to users based on their needs or requests.
+- [**Extending memberships**](#extend-group-member-membership) for continued access.
+- [**Suspending or activating memberships**](#suspend-or-activate-group-member) to control user access as required.
+- [**Managing enrollment configurations**](#manage-enrollment-configurations) to define how users can join the Group.
+- [**Creating**](#create-sub-group)/[**Deleting**](#delete-sub-group) Sub Groups within the Group hierarchy.
+
+> **Note:** *Group Admin* is not a role within the Group; it is a separate administrative designation. Group Admins have the ability to manage all aspects of the Group, as well as any sub-groups in the hierarchy, including roles, memberships, and configurations.
+
+### Group Roles
+
+In RCIAM, members of Groups are assigned roles upon joining. Users can join a Group in one of two ways:
+
+- **By accepting an invitation**: Users receive the roles specified by the inviting administrator.
+- **By submitting an enrollment request**: Users can select their preferred roles from the options available, as defined by the Group’s enrollment configuration.
+
+Each assigned role includes an entitlement attribute, which grants authorization to specific resources. This flexible approach to role assignment allows Group administrators to control access while offering users the ability to select roles when available.
+
+> **Note:** *Entitlement* values can be found on the [**Group Details Tab**](#view-group-details-and-manage-group-roles)
+
+### Membership Status
+
+Members of a Group in RCIAM can have different statuses that affect their access and entitlements:
+
+- **Active**: The membership is fully active, and the user receives all entitlements associated with the roles they hold in the Group.
+
+- **Suspended**: Administrators can suspend a user’s membership for security reasons, such as suspicious activity. While suspended, the user retains membership but loses all entitlements tied to their roles. Administrators can later revoke the suspension and [reactivate the membership](#suspend-or-activate-group-member).
+
+- **Pending**: A user’s membership can have a future start date based on the enrollment configuration used during joining. This scheduled membership will activate automatically on the specified start date. Administrators also have the option to [activate the membership manually](#suspend-or-activate-group-member) if needed.
+
+> **Note:** **Suspension/Activation** of a member will also affect all memberships in Sub Groups of target group
+
+Each status provides Group administrators with flexible control over user access and helps ensure security within the Group.
+
+
+### Membership Expiration 
+
+Memberships in Groups come with a defined duration, which may be set to indefinite if allowed by the Group’s configuration settings. However, the duration of any membership is also affected by the Group's position within the Group hierarchy. Membership in a higher-level Group imposes a duration limit on all memberships in its subordinate Groups. As a result, the expiration date for any membership in a lower-level Group cannot exceed the duration limit set by the higher-level Group.
+
+#### Understanding Expiration Dates in Group Memberships
+
+When viewing members within a Group, you will encounter two types of expiration dates:
+
+- **Direct Membership Expiration**: This date indicates the expiration of membership specifically for the Group you are currently viewing. It applies only to that Group and not to any other Group within the hierarchy.
+  
+- **Effective Membership Expiration**: If relevant, this reflects the actual expiration date imposed by a higher-level Group. If a higher-level Group has an earlier expiration date than the Direct Membership Expiration, the Effective Membership Expiration will take precedence, overriding the direct expiration date for the current Group.
+
+For example, if a user’s Direct Membership Expiration in a lower-level Group is set to indefinite (or a date beyond 2024), but the Effective Membership Expiration from a higher-level Group is November 12, 2024, the user’s membership will expire on November 12, 2024, in line with the higher Group’s restrictions.
+
+![Admin Group Effective Membership Expiration](../../static/img/manager/admin-group-effective-expiration.png)
+
+This hierarchical approach to managing memberships allows for simplified administration and ensures consistent access policies are maintained across different Group levels.
+
+#### Pending Memberships with Future Start Dates
+
+Some enrollment flows or invitations may specify a starting date in the future. In these cases, users who accept the invitation or submit an enrollment request will have a **pending membership** status until the specified start date. Once the start date arrives, the membership will automatically activate, transitioning from pending to active status.
+
+### View Group Details and Manage Group Roles
+The **Group Details Tab** provides essential information and management options, including:
+
+- **Available Group Roles**: Lists roles within the Group and displays the entitlements granted to users with these roles.
+- **Group Path**: Shows the hierarchical path of the Group within the overall structure.
+- **Enrollment Discovery Page URL**: Provides a link to the [Enrollment Discovery Page](#enrollment-discovery-page), allowing users to access relevant enrollment options.
+
+1. Log in to the [Keycloak Account Console](https://kc-example/account/#/) using any of your login credentials linked to your RCIAM account.
+2. Go to the [Group Management Page](https://kc-example/account/#/groups/admingroups) and select the target group to access its Group Configuration Page.
+   ![Admin Groups View](../../static/img/manager/admin-groups.png)
+3. View Group Details 
+    ![Admin Groups Details View](../../static/img/manager/admin-group-details-tab.png)
+#### Create Group Role
+4. To add a new role, enter the role name in the text input field and click the plus button to create it.  
+    ![Admin Groups Create Group Role](../../static/img/manager/admin-group-create-group-role.png)
+#### Delete Group Role
+
+> **Note:**  A role cannot be deleted from a group if it is assigned to any members.
+
+4. Locate the role you want to remove and use the minus button next to it to delete it.
+    ![Admin Groups Delete Group Role](../../static/img/manager/admin-group-delete-group-role.png)
+
+### Create Sub Group
+There are two ways to create a subgroup within the platform:
+#### A) Through the [Group Management Page](https://kc-example/account/#/groups/admingroups)
+
+1. Log in to the [Keycloak Account Console](https://kc-example/account/#/) using any of your login credentials linked to your RCIAM account.
+2. Go to the [Group Management Page](https://kc-example/account/#/groups/admingroups) to locate your target group.
+   ![Admin Groups View](../../static/img/manager/admin-groups.png)
+3. Click on the more options menu next to your group, then select **"Create Subgroup"** from the available options.
+   ![Admin Create Subgroup](../../static/img/manager/admin-group-subgroups-main.png)
+
+#### B) Using the Sub Groups Tab in the Group Configuration Page
+1. Log in to the [Keycloak Account Console](https://kc-example/account/#/) using any of your login credentials linked to your RCIAM account.
+2. Go to the [Group Management Page](https://kc-example/account/#/groups/admingroups) and select the target group to access its Group Configuration Page.
+   ![Admin Groups View](../../static/img/manager/admin-groups.png)
+3. Navigate to the **Sub Groups** tab to view existing subgroups within this Group.
+   ![Admin Group Sub Group Tab](../../static/img/manager/admin-group-subgroups-tab.png)
+4. To create a new subgroup, click the **plus button (+)** at the top of the Sub Groups tab. Alternatively, you can click the **more options menu** next to an existing subgroup and select the option to create a subgroup within that subgroup.
+   ![Admin Group Sub Group Tab Create](../../static/img/manager/admin-group-subgroups-tab-create.png)
+
+### Delete Sub Group 
+
+> **Note:** Top-level Groups and Sub-Groups that contain additional Sub-Groups cannot be deleted.
+
+
+#### A) Through the Group Configuration Page 
+1. Log in to the [Keycloak Account Console](https://kc-example/account/#/) using any of your login credentials linked to your RCIAM account.
+2. Go to the [Group Management Page](https://kc-example/account/#/groups/admingroups) and select the target group to access its Group Configuration Page.
+   ![Admin Groups View](../../static/img/manager/admin-groups-select-sub.png)
+3. Click the trash icon to delete group 
+    ![Admin Delete Sub Group](../../static/img/manager/admin-group-subgroups-delete.png)
+
+#### B) Through the Higher Level Group
+1. Log in to the [Keycloak Account Console](https://kc-example/account/#/) using any of your login credentials linked to your RCIAM account.
+2. Go to the [Group Management Page](https://kc-example/account/#/groups/admingroups) and select the target group to access its Group Configuration Page.
+   ![Admin Groups View](../../static/img/manager/admin-groups-select-parent.png)
+3. Navigate to the **Sub Groups** tab to view existing subgroups within this Group.
+   ![Admin Group Sub Group Tab](../../static/img/manager/admin-group-subgroups-tab.png)
+4. To delete a subgroup, click the **more options menu** next to the subgroup you wish to delete and select the option to delete that.
+   ![Admin Group Sub Group Tab Create](../../static/img/manager/admin-group-subgroups-tab-delete.png)
+
 ## Membership Managment
+
 
 ### View Group Members
 
@@ -14,6 +148,7 @@ sidebar_position: 4
 3. To view the existing members, select the Group Members tab. 
 ![Admin Group View](../../static/img/manager/admin-group-view-members-tab.png)
 ![Admin Group Members](../../static/img/manager/admin-group-members.png)
+
 
 ### Add Group Members
 
@@ -39,22 +174,22 @@ Sending an email invitation to a User to join a group can be achieved by:
 
 > **_NOTE:_**  Once a user accepts or reject an invitation email notification will be sent to admins of the group
 
-#### By Enrollment URL
+#### By Enrollment Request
 
-Users can be added to a group by creating an Enrollment Request through an enrollment url. There are two types of enrollment url, one that contains all public/visible group Enrollments and one that is tied to a specific Enrollment. 
+Users can be added to a group by creating an Enrollment Request. Enrollment Requests can be created through the [Enrollment Discovery Page](#enrollment-discovery-page) or a Direct Enrollment Link. The Enrollment Discovery has available all the visible and active enrollment flows and the Direct Enrollment Link points to a single Enrollment Flow that must be active. 
 
-Α) Sharing an Enrollment URL that contains all the public/visible group Enrollments following these steps:
+Α) Sharing the Enrollment Discovery Page Link following these steps:
 
 1. Login to [Keycloak Account Console](https://kc-example/account/#/) using any of the login credentials already linked to your RCIAM account.
-2. Locate your group in the [Group Management Page](https://kc-example/account/#/groups/admingroups) and access the Group Configuration Page by clicking it.
+2. Locate your group in the [Group Management Page](https://kc-example/account/#/groups/admingroups).
 ![Admin Groups View](../../static/img/manager/admin-groups.png)
-3. Select the more options and from the available options select the “Copy enrollment link to this group”.
+3. Select the more options and from the available options select the “Copy enrollment link to this group”admin-group-subgroups-main.png.
 ![Admin Group Invite Url](../../static/img/manager/admin-group-invite-url.png)
 4. Share the copied Enrollment URL with the User. 
 
 > **_NOTE:_** Once a user submits an enrollment request admins of the group will receive an email notification.
 
-B) Sharing an Enrollment URL for a specific Enrollment
+B) Sharing an Direct Enrollment Link to a specific Enrollment
 
 1. Login to [Keycloak Account Console](https://kc-example/account/#/) using any of the login credentials already linked to your RCIAM account.
 2. Locate your group in the [Group Management Page](https://kc-example/account/#/groups/admingroups) and access the Group Configuration Page by clicking it.
@@ -69,6 +204,8 @@ B) Sharing an Enrollment URL for a specific Enrollment
 > **_NOTE:_** Once a user submits an enrollment request admins of the group will receive an email notification.
 
 ### Remove Member from Group
+
+> **_NOTE:_** Removing a member from a group will also remove them from all Sub Groups.
 
 1. Login to [Keycloak Account Console](https://kc-example/account/#/) using any of the login credentials already linked to your RCIAM account.
 2. Locate your group in the [Group Management Page](https://kc-example/account/#/groups/admingroups) and access the Group Configuration Page by clicking it.
@@ -89,11 +226,25 @@ B) Sharing an Enrollment URL for a specific Enrollment
 3. Select the Group Members tab.
 ![Admin Group Members](../../static/img/manager/admin-group-view-members-tab.png)
 4. Locate the User you want to alter their roles.
-5. Click the edit button next to their assigned roles.
+5. Click the edit button.
 ![Admin Group Edit Member Roles](../../static/img/manager/admin-group-edit-member-roles.png)
 6. Alter their roles by selecting the desired ones from the available options.
 ![Admin Group Edit Member Roles Window](../../static/img/manager/admin-group-edit-member-roles-window.png)
-7. To save edited member roles click the OK button.
+7. To save edited member roles click the Save button.
+
+### Extend Group Member Membership
+1. Login to [Keycloak Account Console](https://kc-example/account/#/) using any of the login credentials already linked to your RCIAM account.
+2. Locate your group in the [Group Management Page](https://kc-example/account/#/groups/admingroups) and access the Group Configuration Page by clicking it.
+![Admin Groups View](../../static/img/manager/admin-groups.png)
+3. Select the Group Members tab.
+![Admin Group Members](../../static/img/manager/admin-group-view-members-tab.png)
+4. Locate the User you want to alter their roles.
+5. Click the edit button.
+![Admin Group Edit Member Roles](../../static/img/manager/admin-group-edit-member-roles.png)
+6. Alter the expiration date using the date picker.
+![Admin Group Edit Member Roles Window](../../static/img/manager/admin-group-extend-membership.png)
+7. To save edited membership details click the Save button.
+
 
 ### Suspend or Activate Group Member
 	
@@ -154,17 +305,15 @@ User memberships can be suspended or activated by a group admin by following the
 
 ## Manage Enrollment Configurations
 
-User enrols to a group using a specific enrollment configuration, each enrollment has a configuration that defines the following things:
+User enrols to a group using a specific enrollment, each enrollment has a configuration that defines the following things:
 
 **Enrollment Name:** The identifying name of the enrollment.
 
-**Membership Expiration:** The duration of the memberships of users enrolled with this enrollment. 
-
-> Membership Expiration can also be indefinite is configuration allows it.
+**Membership Expiration:** The duration of the memberships of users enrolled with this enrollment. [See more](#membership-expiration)
 
 **Start Date:** Allows for memberships to be activated in future time and not directly after an enrollment is completed.
 
-**Requires Approval:** If true enrollment requests submitted by user need to be approved by an administrator.
+**Requires Approval:** When enabled, enrollment requests submitted by users need to be approved by an administrator; otherwise, requests will be automatically approved.
 
 **Comments:** If activated Users that are submitting an enrollment request need to also provide additional information.
 
@@ -174,10 +323,19 @@ User enrols to a group using a specific enrollment configuration, each enrollmen
 
 **Multiselect Roles:** If activated users using this enrollment can select multiple roles.
 
-**Visible to non-members:** If activated the enrollment will be available in the Group Enrollment discovery page.
+**Visible to non-members:** If activated the enrollment will be available in the Group [Enrollment Discovery Page](#enrollment-discovery-page).
 
 **Is Active:** Only active enrollments can be used for user enrollments.
 
+### Enrollment Discovery Page
+
+Each group has a group enrollment discovery page where users can view all the available (visible) enrollment flows. Selecting an enrollment flow and using the submit button after filling the form creates an enrollment request. Enrollment requests can be used to create a new membership to a group or update an existing one. Always preselected is the default enrollment flow.
+
+The Enrollment Discovery Page is accessed through a URL using the group path of a group following this format:
+
+[https://kc-example/account/#/enroll?groupPath=/group/path/example](https://kc-example/account/#/enroll?groupPath=/group/path/example)
+
+![Enrollment Discovery Page](../../static/img/manager/admin-group-enrollment-discovery-page.png)
 
 ### Create Enrollment Configuration
 
@@ -204,6 +362,8 @@ User enrols to a group using a specific enrollment configuration, each enrollmen
 6. Edit the fields you want to update and click the SAVE button to update the Enrollment Configuration
 ![Admin Group Update Enrollment Form](../../static/img/manager/admin-group-update-enrollment-form.png)
 
+> **_NOTE:_** When updating an enrollment configuration, all ‘pending approval’ and ‘Waiting for reply’ enrollment requests with this configuration are archived.
+
 ### Delete Enrollment Configuration
 
 1. Login to [Keycloak Account Console](https://kc-example/account/#/) using any of the login credentials already linked to your RCIAM account.
@@ -218,10 +378,11 @@ User enrols to a group using a specific enrollment configuration, each enrollmen
 ![Admin Group Delete Enrollment](../../static/img/manager/admin-group-delete-enrollment.png) 
 7. Click the YES button to delete the Enrollment Configuration in the confirmation pop-up window. 
 
-## Review Enrollment Request
+> **_NOTE:_** When deleting an enrollment configuration, all ‘pending approval’ and ‘Waiting for reply’ enrollment requests with this configuration are archived.
 
-Once a enrollment request to join a group is submitted admins of the group are notified to review the request if that request requires approval.
- 
+## Review Enrollment Request
+All **enrollment requests**—no matter for the status—are accessible through the **Account Console** for Group admins. When a user submits an enrollment request to join a Group and the request requires approval, Group admins are notified via email. These notifications include a direct link to the request that needs to be reviewed, streamlining the approval process. Admins can view and manage these enrollment requests directly from their Account Console, making it easy to keep track of pending requests and process approvals in a timely manner.
+
 To review an enrollment request follow these steps:
 
 1. Login to [Keycloak Account Console](https://kc-example/account/#/) using any of the login credentials already linked to your RCIAM account.
@@ -244,17 +405,27 @@ Information Available when reviewing an enrollment request:
 
 **Submission Date:** Date and time of the submission of the request by the user.
 
-**Enrollment Request Status:** Status of the request. (Pending Approval, Approved, Rejected)
+**Enrollment Request State**: State of the request. (Pending Approval, Approved, Rejected, Self Reviewed, Archived)
 
 ### User Details
+The User Details at the time the enrollment request was created:
 
-**Full Name:**  Full name of the user submitting the request.
+**Full Name**: Full name of the user when the request was submitted.
 
-**Email:** Email address of the user submitting the request.
+**Email**: Email address of the user when the request was submitted.
 
-**Identity Assurance:** ????
+**Authentication Providers**: Authentication provider(s) used by the user for submitting the request.
 
-**Linked Identity Providers:** 
+**Assurance**: Information for assessing the confidence level in the identity of the user when the request was submitted.
+
+
+### Show Current User Details
+
+**Full Name**: Current full name in the user profile
+
+**Email**: Current email address in the user profile
+
+**Linked Identity Providers**: Authentication providers linked to the user’s profile.
 
 ### Membership Details
 
@@ -266,7 +437,7 @@ Information Available when reviewing an enrollment request:
 
 **Acceptable User Policy (AUP):** Link of the AUP that the user has approved
 
-**Membership Expiration Days:** The duration of the membership in days 
+**Membership Expiration Days:** The duration of the membership in days. [See more](#membership-expiration)
 
 **Comments (or custom name):** Additional information from the user submitting the request. 
 
