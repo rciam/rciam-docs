@@ -25,7 +25,7 @@ To link a new organisational or social identity to your RCIAM account:
    institutional/social identity provider you want to link to your account.
 
    PS. If you saw the following error message:
-   ![already-linked](../../static/img/user/already-linked.png)
+   ![already-linked](../../static/img/user/already-linked.PNG)
    , you have already logged in and created a separate account for this Identity Provider.
    Please contact support in order to delete this account. 
    After deleting this account, you could proceed with linking this account with your existing account.
